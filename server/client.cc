@@ -1,30 +1,30 @@
 #include "headers/client.h"
 
-Client::Client(std::string name, SockWriter *writer, ClientListener *listener) 
+Client::Client(std::string name, Sock_writer *writer, Client_listener *listener) 
 {
-	(*this).name = name; 
-	(*this).writer = writer; 
-	(*this).listener = listener; 		
+	name_ = name; 
+	writer_ = writer; 
+	listener_ = listener; 		
 }
 
-std::string Client::getName()
+std::string Client::get_name()
 {
-	return name; 
+	return name_; 
 }
 
-SockWriter *Client::getWriter()
+Sock_writer *Client::get_writer()
 {
-	return writer; 	
+	return writer_; 	
 }
 
-ClientListener *Client::getListener()
+Client_listener *Client::get_listener()
 {
-	return listener; 
+	return listener_; 
 }
 
 Client::~Client()
 {
-	delete writer; 
-	delete listener; 
+	delete writer_; 
+	delete listener_; 
 }
 

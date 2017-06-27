@@ -1,16 +1,16 @@
 #include "headers/client_entrypoint.h"
 
 
-void clientEntrypoint(int sock_fd)
+void client_entrypoint(int sock_fd)
 {
-	SockReader *reader = new SockReader(sock_fd); 
-	SockWriter *writer = new SockWriter(sock_fd); 
+	Sock_reader *reader = new Sock_reader(sock_fd); 
+	Sock_writer *writer = new Sock_writer(sock_fd); 
 
-	ClientListener *listener = new ClientListener(reader); 
+	Client_listener *listener = new Client_listener(reader); 
 	
 
 	//Client *cli = new Client(name, writer, listener); 
 	//ClientDirSingleton.get_singleton().add_to_dir(cli); 
 
-	(*listener).listenForMessages(); 
+	(*listener).listen_for_messages(); 
 }

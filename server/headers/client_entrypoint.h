@@ -9,7 +9,7 @@
 //#include "../headers/client_dir.h"
 //#include "../headers/client_dir_singleton.h"
 
-void clientEntrypoint(int sock_fd);
+void client_entrypoint(int sock_fd);
 
 
 #endif // CLIENT_ENTRYPOINT_H_INCLUDED

@@ -18,9 +18,9 @@ int say_hello(int client_fd)
 
 int main()
 {
-	std::function<void(int)> func = clientEntrypoint; 
+	std::function<void(int)> func = client_entrypoint; 
 	//std::thread comm_thread (listen_on_port, 4447, std::ref(func)); 		
 	//comm_thread.join(); 	
-	listenOnPort(4449, func); 
+	listen_on_port(4449, func); 
 	return 0; 	
 }

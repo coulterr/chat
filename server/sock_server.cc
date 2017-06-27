@@ -1,7 +1,7 @@
 #include "headers/sock_server.h"
 
 		
-void listenOnPort(int port_num, std::function<void(int)> func)
+void listen_on_port(int port_num, std::function<void(int)> func)
 {
        	int server_fd;
         struct sockaddr_in client_addr, server_addr;

@@ -1,26 +1,20 @@
 #include "headers/client_listener.h"
 
-ClientListener::ClientListener(SockReader *reader)
+Client_listener::Client_listener(Sock_reader *reader)
 {
-	(*this).reader = reader; 
+	reader_ = reader; 
 }
 
-void ClientListener::listenForMessages()
+void Client_listener::listen_for_messages()
 {
 	while(true)
 	{
-		std::string msg = (*reader).recvMsg(); 
+		std::string msg = (*reader_).recv_msg(); 
 		std::cout << msg << std::endl; 
 	}
 }
 
-//void ClientListener::startListening()
-//{
-//	task = new std::thread(&ClientListener::listenForMessages, this); 
-//}
-
-ClientListener::~ClientListener()
+Client_listener::~Client_listener()
 {
-	delete task; 
-	delete reader; 
+	delete reader_; 
 }

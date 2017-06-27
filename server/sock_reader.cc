@@ -1,20 +1,20 @@
 #include "headers/sock_reader.h"
 
 
-SockReader::SockReader(int sock_fd) 
+Sock_reader::Sock_reader(int sock_fd) 
 {
-	(*this).sock_fd = sock_fd;  
+	sock_fd_ = sock_fd;  
 }
 
-std::string SockReader::recvMsg()
+std::string Sock_reader::recv_msg()
 {
 	char buf[1024] = ""; 
-	recv(sock_fd, (void *) buf, 1023, 0); 
+	recv(sock_fd_, (void *) buf, 1023, 0); 
 	return std::string(buf); 
 }
 
 
-SockReader::~SockReader()
+Sock_reader::~Sock_reader()
 {
 }
 

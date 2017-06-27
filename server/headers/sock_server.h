@@ -10,6 +10,6 @@
 #include <sys/types.h>
 #include <functional>
 #include <thread>
-void listenOnPort(int port_num, std::function<void(int)> func);
+void listen_on_port(int port_num, std::function<void(int)> func);
 
 #endif // SOCK_SERVER_H_INCLUDED

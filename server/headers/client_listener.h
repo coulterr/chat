@@ -9,16 +9,14 @@
 #include <sys/socket.h>
 #include "../headers/sock_reader.h"
 
-class ClientListener 
+class Client_listener 
 {
 	private:
-		SockReader *reader; 
-		std::thread *task; 
+		Sock_reader *reader_; 
 	public:
-		ClientListener(SockReader *reader);
-		void listenForMessages();
-		void startListening();
-		~ClientListener();
+		Client_listener(Sock_reader *reader_);
+		void listen_for_messages();
+		~Client_listener();
 };
 
 #endif // CLIENT_LISTENER_H_INCLUDED

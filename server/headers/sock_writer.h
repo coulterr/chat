@@ -9,15 +9,14 @@
 #include <mutex>
 #include <string>
 
-class SockWriter 
+class Sock_writer 
 {
 	private: 
-		int sock_fd; 
-		std::mutex lock;
+		int sock_fd_; 
 	public:  
-		SockWriter(int sock_fd);
-		bool sendMsg(std::string str);
-		~SockWriter();
+		Sock_writer(int sock_fd);
+		bool send_msg(std::string str);
+		~Sock_writer();
 };
 
 #endif // SOCK_WRITER_H_INCLUDED

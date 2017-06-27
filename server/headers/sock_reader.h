@@ -4,13 +4,13 @@
 #include <sys/socket.h>
 #include <string>
 
-class SockReader
+class Sock_reader
 {
 	private:
-		int sock_fd; 
+		int sock_fd_; 
 	public:
-		SockReader(int sock_fd);
-		std::string recvMsg();
-		~SockReader();
+		Sock_reader(int sock_fd);
+		std::string recv_msg();
+		~Sock_reader();
 };
 #endif // SOCK_READER_H_INCLUDED
