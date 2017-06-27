@@ -1,0 +1,22 @@
+1. Initialize ClientDirectory
+2. Spin up server thread 
+        - listens for new connections, starts new connection threads. 
+
+3. The rest is for Threadpool:
+	
+	New Connection: short-living login thread
+		- creates client object
+		- spawns listener thread 
+
+	Listener: long-living thread 
+		- mapped to client object (Not necessary. See below) 
+		- all messages handled on demand
+		- call to recvMsg() has timeout (long amount) that if triggered, 
+		  prompts an outgoing test from server (on failure, client is removed) 
+		- messages are sent through direct call to clientdir or some kind of  
+		  thread safe utilities, which will throw an exception if the recipient
+		  has been removed
+		 
+			     
+
+			      
