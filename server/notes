@@ -3,6 +3,9 @@
         - listens for new connections, starts new connection threads. 
 
 3. The rest is for Threadpool:
+	- Threadpool is there for launching and cleaning up after threads 
+	- Maybe also for storing running threads for reference... perhaps by 
+	  admin utilities. 	
 	
 	New Connection: short-living login thread
 		- creates client object
