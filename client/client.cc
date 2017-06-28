@@ -7,13 +7,18 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <iostream> 
-int getAllContacts(int serverFD);
-int getUpdatedContacts(int serverFD);
-int getAllByContact(int serverFD, char *name);
-int getNewByContact(int serverFD, char *name);
-int addSending(int serverFD, char *name, char *body);
-int sendMessage(int socketFD, char *message);
-int receiveMessage(int socketFD, char *messageDest);
+#include <thread>
+
+void listen_for_messages(int serverFD)
+{
+	while(true){
+
+		char buf[1024] = ""; 
+		ssize_t status = recvfrom(serverFD, (void *) buf, 1023, 0, NULL, NULL); 
+		std::cout << std::string(buf) << std::endl; 
+	}
+
+}
 
 
 std::string getInput()
@@ -23,6 +28,7 @@ std::string getInput()
 	return msg; 
 }
 
+
 int main()
 {
         int serverFD, portNum, len;
@@ -30,7 +36,7 @@ int main()
         struct hostent *server;
 
 	char hostname[] = "localhost";
-        portNum = 4454;
+        portNum = 4458;
         serverFD = socket(AF_INET, SOCK_STREAM, 0);
         server = gethostbyname(hostname);
 
@@ -44,9 +50,12 @@ int main()
                 exit(0);
         }
 
+	std::thread listen_thread(listen_for_messages, serverFD);
 	while(true)
 	{	
 		std::string msg = getInput();  
 		send(serverFD, (void *)msg.c_str(), msg.length(), 0); 
 	}
 }
+
+

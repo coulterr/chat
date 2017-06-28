@@ -7,7 +7,7 @@ bool process_login(Client *cli)
 	return true; 
 }
 
-void start_listening(Client *cli) 
+void start_listening(Client *cli, Client_dir *client_dir) 
 {
 	while(true)
 	{
@@ -15,57 +15,62 @@ void start_listening(Client *cli)
 		if(msg.compare("TIMEOUT") == 0){
 			std::cout << "ERROR" << std::endl; 
 		}
-		std::cout << msg << std::endl; 
+		std::string recipient = msg.substr(0, msg.find_first_of(" ", 0));
+		msg = msg.substr(msg.find_first_of(" ", 0), msg.length());  
+		msg = (*cli).get_name() + ": " + msg;
+		(*client_dir).dispatch_msg(recipient, msg); 
 	}
 }
 
-Threadpool::Threadpool()
+Threadpool::Threadpool(Client_dir *client_dir)
 {
-	client_queue_ = new std::queue<Client*>(); 
-	threads_ = new std::vector<std::thread*>(); 	
-	empty_ = new sem_t(); 
-	full_ = new sem_t(); 
+	client_dir_ = client_dir; 
+	client_queue_ = std::queue<Client*>(); 
+	threads_ = std::vector<std::thread>(); 	
+	empty_ = sem_t(); 
+	full_ = sem_t(); 
 
-	sem_init(empty_, 0, 100); 
-	sem_init(full_, 0, 0);  
+	sem_init(&empty_, 0, 100); 
+	sem_init(&full_, 0, 0);  
 	
 	for(int i = 0; i < 100; ++i){
-		(*threads_).push_back(new std::thread(&Threadpool::start_spinning, this)); 	
+		threads_.push_back(std::thread(&Threadpool::start_spinning, this)); 	
 	}
 	 
 }
 
 void Threadpool::start_spinning()
 {
-	Client *cli;
 	 
 	while(true){
-		sem_wait(full_);
-		{
+		sem_wait(&full_);
+		
 			std::cout << "Acquiring client..." << std::endl; 
-			cli = (*client_queue_).front();
-			(*client_queue_).pop();  
-		}
-		sem_post(empty_); 
+			Client *cli = client_queue_.front();
+			client_queue_.pop();  
+		
+		sem_post(&empty_); 
 
 		std::cout << "Processing login..." << std::endl;
 		if(!process_login(cli)){
 			//break	
 		}
+
+		(*client_dir_).add_client(cli); 
 	
 		std::cout << "Listening for messages..." << std::endl;
-		start_listening(cli); 
+		start_listening(cli, client_dir_); 
 	}
 }
 
 void Threadpool::add_client(Client *cli)
 {
-	sem_wait(empty_); 
+	sem_wait(&empty_); 
 	{
 		std::cout << "Adding client..." << std::endl;
-		(*client_queue_).push(cli); 
+		client_queue_.push(cli); 
 	}
-	sem_post(full_); 
+	sem_post(&full_); 
 }
 
 Threadpool::~Threadpool()

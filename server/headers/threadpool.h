@@ -10,7 +10,7 @@
 #include <semaphore.h>
 
 #include "../headers/client.h"
-
+#include "../headers/client_dir.h"
 bool process_login(Client *cli); 
 void start_listening(Client *cli); 
 
@@ -18,14 +18,15 @@ void start_listening(Client *cli);
 class Threadpool
 {
 	private:
-		std::queue<Client*> *client_queue_; 
-		std::vector<std::thread*> *threads_;
-		sem_t *empty_; 
-		sem_t *full_; 
+		Client_dir *client_dir_; 
+		std::queue<Client*> client_queue_; 
+		std::vector<std::thread> threads_;
+		sem_t empty_; 
+		sem_t full_; 
 
 		 
 	public:
-		Threadpool(); 
+		Threadpool(Client_dir *client_dir); 
 		void start_spinning(); 
 		void add_client(Client *cli); 
 		~Threadpool();
