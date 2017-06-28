@@ -10,6 +10,9 @@
 #include <sys/types.h>
 #include <functional>
 #include <thread>
-void listen_on_port(int port_num, std::function<void(int)> func);
+#include "../headers/threadpool.h"
+
+void client_entrypoint(int sockfd, Threadpool *tpool);
+void listen_on_port(int port_num, Threadpool *tpool);
 
 #endif // SOCK_SERVER_H_INCLUDED

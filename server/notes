@@ -20,6 +20,11 @@
 		  thread safe utilities, which will throw an exception if the recipient
 		  has been removed
 		 
-			     
-
-			      
+			 
+Threadpool: 
+	- Takes client as argument (no name yet) 
+	- Starts sign-in process
+	`	- if time out, stop
+	- On success, starts listening 
+		- timeout for checking connection
+		- Can be pre-empted...  

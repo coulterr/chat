@@ -1,7 +1,24 @@
 #include "headers/sock_server.h"
 
+void client_entrypoint(int sockfd, Threadpool *tpool)
+{
+	//Sock_reader *reader = new Sock_reader(sock_fd); 
+	//Sock_writer *writer = new Sock_writer(sock_fd); 
+
+	//Client_listener *listener = new Client_listener(reader); 
+	
+
+	//Client *cli = new Client(name, writer, listener); 
+	//ClientDirSingleton.get_singleton().add_to_dir(cli); 
+	//(*listener).listen_for_messages(); 
+	//Client *cli = new Client(writer, listener); 
+	
+	Client *cli = new Client(sockfd); 
+	(*tpool).add_client(cli); 
+
+}
 		
-void listen_on_port(int port_num, std::function<void(int)> func)
+void listen_on_port(int port_num, Threadpool *tpool)
 {
        	int server_fd;
         struct sockaddr_in client_addr, server_addr;
@@ -42,10 +59,16 @@ void listen_on_port(int port_num, std::function<void(int)> func)
         client_len = sizeof(client_addr);
         fprintf(stderr, "Listening for clients...\n");
 
+
+	struct timeval tv; 
+	tv.tv_sec = 30;
+	tv.tv_usec = 0; 
+
         for(;;)
         {
                	int client_fd = accept(server_fd, (struct sockaddr *) &client_addr, &client_len);
-		std::thread *t = new std::thread(func, client_fd); 
+		setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(struct timeval));
+		std::thread *t = new std::thread(client_entrypoint, client_fd, tpool); 
 		
         }
 }

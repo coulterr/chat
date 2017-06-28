@@ -3,24 +3,17 @@
 #include <unistd.h>
 
 #include <thread>
+#include <functional> 
 
 #include "headers/sock_server.h"
-#include "headers/client_entrypoint.h"
-
-using std::thread; 
-
-
-int say_hello(int client_fd)
-{
-	send(client_fd, "Hello!", 6,  0); 
-	close(client_fd); 	
-}
+#include "headers/threadpool.h"
+#include "headers/client.h"
 
 int main()
 {
-	std::function<void(int)> func = client_entrypoint; 
-	//std::thread comm_thread (listen_on_port, 4447, std::ref(func)); 		
-	//comm_thread.join(); 	
-	listen_on_port(4449, func); 
+	Threadpool *tpool = new Threadpool(); 
+	std::thread server_thread(listen_on_port, 4453, tpool); 		
+	//listen_on_port(4449, func); 
+	server_thread.join(); 
 	return 0; 	
 }

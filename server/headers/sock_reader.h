@@ -2,6 +2,7 @@
 #define SOCK_READER_H_INCLUDED
 
 #include <sys/socket.h>
+#include <iostream>
 #include <string>
 
 class Sock_reader

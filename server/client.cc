@@ -1,10 +1,19 @@
 #include "headers/client.h"
 
-Client::Client(std::string name, Sock_writer *writer, Client_listener *listener) 
+Client::Client(std::string name, int sockfd) 
 {
 	name_ = name; 
-	writer_ = writer; 
-	listener_ = listener; 		
+	sockfd_ = sockfd; 
+}
+
+Client::Client(int sockfd)
+{
+	sockfd_ = sockfd; 
+}
+
+void Client::set_name(std::string name)
+{
+	name_ = name; 
 }
 
 std::string Client::get_name()
@@ -12,19 +21,30 @@ std::string Client::get_name()
 	return name_; 
 }
 
-Sock_writer *Client::get_writer()
-{
-	return writer_; 	
+bool Client::send_msg(std::string msg)
+{ 
+	const char *str = msg.c_str();
+	ssize_t status = send(sockfd_, (void *) str, strlen(str), 0); 
+	
+	if (status == -1){
+		return false; 
+	}
+
+	return true; 
 }
 
-Client_listener *Client::get_listener()
+std::string Client::recv_msg()
 {
-	return listener_; 
+	char buf[1024] = ""; 
+	ssize_t status = recvfrom(sockfd_, (void *) buf, 1023, 0, NULL, NULL); 
+	if(status == -1){
+		return std::string("TIMEOUT"); 	
+	}
+	return std::string(buf); 
 }
+
 
 Client::~Client()
 {
-	delete writer_; 
-	delete listener_; 
 }
 
