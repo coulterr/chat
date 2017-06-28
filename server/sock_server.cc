@@ -68,7 +68,7 @@ void listen_on_port(int port_num, Threadpool *tpool)
         {
                	int client_fd = accept(server_fd, (struct sockaddr *) &client_addr, &client_len);
 		setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(struct timeval));
-		std::thread *t = new std::thread(client_entrypoint, client_fd, tpool); 
+		client_entrypoint(client_fd, tpool); 
 		
         }
 }
