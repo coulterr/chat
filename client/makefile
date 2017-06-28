@@ -1,6 +1,7 @@
-default: client.cc
-	g++ -c client.cc -o client.o 
-	g++ client.o -o client
+client: client.o
+	g++ -o client client.o 
+client.o: client.cc
+	g++ -c -o client.o client.cc
 clean: 
 	rm *.o -f 
 	rm client 
