@@ -1,7 +1,8 @@
-client: client.o
-	g++ -o client client.o 
+objects = client.o 
+
+client: $(objects)
+	g++ -o client $(objects)
 client.o: client.cc
 	g++ -c -o client.o client.cc
 clean: 
-	rm *.o -f 
-	rm client 
+	rm client $(objects)
