@@ -25,7 +25,9 @@ std::string Client::get_name()
 bool Client::send_msg(std::string msg)
 { 
 	const char *str = msg.c_str();
-	ssize_t status = send(sockfd_, (void *) str, strlen(str), MSG_NOSIGNAL); 
+	//ssize_t status = send(sockfd_, (void *) str, strlen(str), MSG_NOSIGNAL); 
+	ssize_t status = send(sockfd_, (void *) str, strlen(str), 0); 
+	status = send(sockfd_, (void *) str, strlen(str), MSG_NOSIGNAL); 
 	
 	std::cout << "send status: " << "to " << name_ << " " << status << std::endl;  
 	

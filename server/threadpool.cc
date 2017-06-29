@@ -10,7 +10,7 @@ bool process_login(Client *cli)
 void start_listening(Client *cli, Client_dir *client_dir) 
 {
 	while(true)
-	{
+	{ 
 		std::string msg = (*cli).recv_msg();
 		if (msg.compare("TIMEOUT") == 0)
 		{
@@ -30,6 +30,7 @@ void start_listening(Client *cli, Client_dir *client_dir)
 			msg = msg.substr(msg.find_first_of(" ", 0), msg.length());  
 			msg = (*cli).get_name() + ": " + msg;
 			(*client_dir).dispatch_msg(recipient, msg); 
+			while(true){}; 
 		}
 	}
 }

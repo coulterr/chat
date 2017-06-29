@@ -37,3 +37,15 @@ ON SOCKET ERRORS:
 	  closes the socket? Otherwise and remains open for reads? Uncertain...
 	  
 	  Sending to a CLOSED (not just disconnected) socket returns BROKEN PIPE   
+
+	- From stack overflow: 	
+	  	 
+		 	https://stackoverflow.com/questions/11436013/writing-to-a-closed-local-tcp-socket-not-failing
+		 	
+			@regularfry, Can you pl. see if you can add the following lines of code before your writes, 
+			int tcp_info_length; struct tcp_info tcp_info; tcp_info_length = sizeof(tcp_info) ;
+			getsockopt(client_fd, SOL_TCP, TCP_INFO, (void *)&tcp_info, (sockl en_t *)&tcp_info_length ); 
+			The member tcp_info.tcpi_state is having the current TCP state. I am getting the value 8(CLOSE_WAIT)
+			a 7(TCP_CLOSE) before/after the first write respectively.Can you use this information to handle this case. 
+			Pl. see the header file tcp.h in netinet folder for all the values of TCP states. 
+			https://www.softlab.ntua.gr/facilities/documentation/unix/unix-socket-faq/unix-socket-faq-2.html
