@@ -28,3 +28,12 @@ Threadpool:
 	- On success, starts listening 
 		- timeout for checking connection
 		- Can be pre-empted...  
+
+
+ON SOCKET ERRORS: 
+	- Reading socket can return errnos for "RESOURCE TEMPORARILY UNAVAILABLE"
+	  (timeout) or "CONNECTION RESET BY PEER" (immediate termination) or 
+	  "CLEAN EXIT" (full exit process). Reading and getting these automatically
+	  closes the socket? Otherwise and remains open for reads? Uncertain...
+	  
+	  Sending to a CLOSED (not just disconnected) socket returns BROKEN PIPE   

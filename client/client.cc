@@ -36,7 +36,7 @@ int main()
         struct hostent *server;
 
 	char hostname[] = "localhost";
-        portNum = 4464;
+        portNum = 4476;
         serverFD = socket(AF_INET, SOCK_STREAM, 0);
         server = gethostbyname(hostname);
 
@@ -54,6 +54,10 @@ int main()
 	while(true)
 	{	
 		std::string msg = getInput();  
+		if(msg.compare("close") == 0){
+			close(serverFD); 
+			exit(0); 
+		}
 		send(serverFD, (void *)msg.c_str(), msg.length(), 0); 
 	}
 }

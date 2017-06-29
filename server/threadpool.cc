@@ -12,11 +12,20 @@ void start_listening(Client *cli, Client_dir *client_dir)
 	while(true)
 	{
 		std::string msg = (*cli).recv_msg();
-		if(msg.compare("TIMEOUT") == 0){
-			if(!(*client_dir).dispatch_msg((*cli).get_name(), "KEEPALIVE")){
+		if (msg.compare("TIMEOUT") == 0)
+		{
+			if (!(*client_dir).dispatch_msg((*cli).get_name(), "KEEPALIVE"))
+			{
+				std::cout << "DIRTY SHUTDOWN" << std::endl;
 				break;  
 			}
-		}else {
+		}
+		else if (msg.compare("CLEANSHUT") == 0)
+		{
+			std::cout << "CLEAN EXIT" << std::endl; 
+			break; 	
+		}
+		else {
 			std::string recipient = msg.substr(0, msg.find_first_of(" ", 0));
 			msg = msg.substr(msg.find_first_of(" ", 0), msg.length());  
 			msg = (*cli).get_name() + ": " + msg;
