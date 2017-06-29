@@ -17,6 +17,8 @@ class Client_dir
 		bool contains_client(std::string name); 
 		bool add_client(Client *cli); 
 		bool dispatch_msg(std::string name, std::string msg); 
+		void remove_client(std::string name); 
+		void list_clients(); 
 		~Client_dir();
 };
 #endif // CLIENT_DIR_H_INCLUDED

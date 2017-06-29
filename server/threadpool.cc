@@ -13,12 +13,15 @@ void start_listening(Client *cli, Client_dir *client_dir)
 	{
 		std::string msg = (*cli).recv_msg();
 		if(msg.compare("TIMEOUT") == 0){
-			std::cout << "ERROR" << std::endl; 
+			if(!(*client_dir).dispatch_msg((*cli).get_name(), "KEEPALIVE")){
+				break;  
+			}
+		}else {
+			std::string recipient = msg.substr(0, msg.find_first_of(" ", 0));
+			msg = msg.substr(msg.find_first_of(" ", 0), msg.length());  
+			msg = (*cli).get_name() + ": " + msg;
+			(*client_dir).dispatch_msg(recipient, msg); 
 		}
-		std::string recipient = msg.substr(0, msg.find_first_of(" ", 0));
-		msg = msg.substr(msg.find_first_of(" ", 0), msg.length());  
-		msg = (*cli).get_name() + ": " + msg;
-		(*client_dir).dispatch_msg(recipient, msg); 
 	}
 }
 
@@ -60,6 +63,7 @@ void Threadpool::start_spinning()
 	
 		std::cout << "Listening for messages..." << std::endl;
 		start_listening(cli, client_dir_); 
+		(*client_dir_).remove_client((*cli).get_name()); 
 	}
 }
 

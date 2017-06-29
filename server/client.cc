@@ -24,7 +24,9 @@ std::string Client::get_name()
 bool Client::send_msg(std::string msg)
 { 
 	const char *str = msg.c_str();
-	ssize_t status = send(sockfd_, (void *) str, strlen(str), 0); 
+	ssize_t status = sendto(sockfd_, (void *) str, strlen(str), 0, NULL, 0); 
+	
+	std::cout << "status: " << name_ << " " << status << std::endl;  
 	
 	if (status == -1){
 		return false; 
@@ -46,5 +48,6 @@ std::string Client::recv_msg()
 
 Client::~Client()
 {
+	close(sockfd_); 
 }
 

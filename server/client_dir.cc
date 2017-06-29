@@ -36,7 +36,7 @@ bool Client_dir::dispatch_msg(std::string name, std::string msg)
 	
 	sem_wait(&lock_); 	
 		if((*this).contains_client(name)) {
-			(*clients_[name]).send_msg(msg); 	
+			ret = (*clients_[name]).send_msg(msg); 	
 		}else {
 			ret = false; 
 		}
@@ -45,6 +45,29 @@ bool Client_dir::dispatch_msg(std::string name, std::string msg)
 	return ret; 
 }
 
+void Client_dir::remove_client(std::string name)
+{
+	sem_wait(&lock_); 
+
+		clients_.erase(name); 
+	
+	sem_post(&lock_); 
+}
+
+void Client_dir::list_clients()
+{
+	sem_wait(&lock_); 
+
+		std::map<std::string, Client*>::iterator i; 
+		int count = 1; 
+		for(i = (clients_).begin(); i != (clients_).end(); ++i)
+		{
+			std::cout << count << ": " << (*(*i).second).get_name() << std::endl;  	
+			++count; 
+		}	
+		
+	sem_post(&lock_); 
+}
 
 Client_dir::~Client_dir()
 {
