@@ -20,7 +20,7 @@ void listen_for_messages(int serverFD)
 		read(serverFD, &tmp, sizeof(tmp)); 
 
 		int len = ntohl(tmp); 
-		char buf[len]; 
+		char buf[len + 1]; 
 		status = recvfrom(serverFD, (void *) buf, len, 0, NULL, NULL); 
 		buf[len] = 0; 
 		std::cout << std::string(buf) << std::endl; 
@@ -66,8 +66,9 @@ int main()
 			close(serverFD); 
 			exit(0); 
 		}
-		int32_t len = htonl(msg.length()); 
-		send(serverFD, &len, sizeof(len), 0);  
+		int len = msg.length(); 
+		int32_t tmp = htonl(len); 
+		send(serverFD, &tmp, sizeof(tmp), 0);  
 		send(serverFD, (void *)msg.c_str(), len, 0); 
 	}
 }

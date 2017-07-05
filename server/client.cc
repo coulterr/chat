@@ -26,9 +26,10 @@ bool Client::send_msg(std::string msg)
 { 
 	ssize_t status; 
 	const char *str = msg.c_str();
-	int32_t len = htonl(strlen(str)); 	
+	int len = strlen(str); 
+	int32_t tmp = htonl(len); 	
 	
-	status = send(sockfd_, &len, sizeof(len), MSG_NOSIGNAL); 
+	status = send(sockfd_, &tmp, sizeof(tmp), MSG_NOSIGNAL); 
 	if (status == -1 || status == EPIPE)
 	{
 		std::cout << "On send(): ERROR:" << std::strerror(errno) << std::endl;  
