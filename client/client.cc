@@ -8,13 +8,21 @@
 #include <netdb.h>
 #include <iostream> 
 #include <thread>
+#include <arpa/inet.h>
 
 void listen_for_messages(int serverFD)
 {
 	while(true){
 
-		char buf[1024] = ""; 
-		ssize_t status = recvfrom(serverFD, (void *) buf, 1023, 0, NULL, NULL); 
+		ssize_t status; 
+		int32_t tmp; 
+
+		read(serverFD, &tmp, sizeof(tmp)); 
+
+		int len = ntohl(tmp); 
+		char buf[len]; 
+		status = recvfrom(serverFD, (void *) buf, len, 0, NULL, NULL); 
+		buf[len] = 0; 
 		std::cout << std::string(buf) << std::endl; 
 	}
 
@@ -58,7 +66,9 @@ int main()
 			close(serverFD); 
 			exit(0); 
 		}
-		send(serverFD, (void *)msg.c_str(), msg.length(), 0); 
+		int32_t len = htonl(msg.length()); 
+		send(serverFD, &len, sizeof(len), 0);  
+		send(serverFD, (void *)msg.c_str(), len, 0); 
 	}
 }
 

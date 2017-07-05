@@ -24,14 +24,20 @@ std::string Client::get_name()
 
 bool Client::send_msg(std::string msg)
 { 
+	ssize_t status; 
 	const char *str = msg.c_str();
-	//ssize_t status = send(sockfd_, (void *) str, strlen(str), MSG_NOSIGNAL); 
-	ssize_t status = send(sockfd_, (void *) str, strlen(str), 0); 
-	status = send(sockfd_, (void *) str, strlen(str), MSG_NOSIGNAL); 
+	int32_t len = htonl(strlen(str)); 	
 	
-	std::cout << "send status: " << "to " << name_ << " " << status << std::endl;  
+	status = send(sockfd_, &len, sizeof(len), MSG_NOSIGNAL); 
+	if (status == -1 || status == EPIPE)
+	{
+		std::cout << "On send(): ERROR:" << std::strerror(errno) << std::endl;  
+		return false; 
+	}
 	
-	if (status == -1 || status == EPIPE){
+	status = send(sockfd_, (void *) str, len, MSG_NOSIGNAL); 
+	if (status == -1 || status == EPIPE)
+	{
 		std::cout << "On send(): ERROR:" << std::strerror(errno) << std::endl;  
 		return false; 
 	}
@@ -41,20 +47,61 @@ bool Client::send_msg(std::string msg)
 
 std::string Client::recv_msg()
 {
-	char buf[1024] = ""; 
-	ssize_t status = recvfrom(sockfd_, (void *) buf, 1023, 0, NULL, NULL); 
+	int goal; 
+	ssize_t status; 
+	
+	int32_t tmp; 
 
-	if(status == -1){
-		std::cout << "detected timeout on recv" << std::endl; 	
-		std::cout << "On recvfrom() ERROR:" << std::strerror(errno) << std::endl;  
-		return std::string("TIMEOUT"); 
+	goal = sizeof(tmp); 
+	while (goal > 0) {
+	
+		status = read(sockfd_, &tmp + sizeof(tmp) - goal, goal);
+		
+		if (status == -1)
+		{
+			//timeout or error?
+			if (errno == EAGAIN) 
+			{
+				 return "TIMEOUT"; 
+			}
+			else 
+			{
+				return "ERROR"; 
+			}
+		}
+		else if (status == 0) 
+		{
+			return "CLOSED"; 
+		}
+		goal -= status; 	 
 	}
-	if(status == 0){
-		std::cout << "detected clean exit on recv" << std::endl; 	
-		return std::string("CLEANSHUT"); 
-
+	
+	int len = ntohl(tmp); 
+	char buf[len + 1] = ""; 
+	
+	goal = len;  
+	while (goal > 0) {
+	
+		status = read(sockfd_, buf + len - goal, goal);
+	
+		if (status == -1)
+		{
+			//timeout or error?
+			if (errno == EAGAIN) 
+			{
+				 return "TIMEOUT"; 
+			}
+			else 
+			{
+				return "ERROR"; 
+			}
+		}
+		else if (status == 0) 
+		{
+			return "CLOSED"; 
+		}
+		goal -= status; 	 
 	}
-	return std::string(buf); 
 }
 
 

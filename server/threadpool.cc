@@ -20,7 +20,12 @@ void start_listening(Client *cli, Client_dir *client_dir)
 				break;  
 			}
 		}
-		else if (msg.compare("CLEANSHUT") == 0)
+		else if (msg.compare("ERROR") == 0)
+		{
+			std::cout << "CLIENT LOST" << std::endl; 
+			break; 
+		}	
+		else if (msg.compare("CLOSED") == 0)
 		{
 			std::cout << "CLEAN EXIT" << std::endl; 
 			break; 	
