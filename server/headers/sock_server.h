@@ -11,8 +11,9 @@
 #include <functional>
 #include <thread>
 #include "../headers/threadpool.h"
+#include "../headers/connection.h"
 
-void client_entrypoint(int sockfd, Threadpool *tpool);
-void listen_on_port(int port_num, Threadpool *tpool);
+void client_entrypoint(int sockfd, Threadpool *tpool, Client_dir *directory);
+void listen_on_port(int port_num, Threadpool *tpool, Client_dir *directory);
 
 #endif // SOCK_SERVER_H_INCLUDED

@@ -12,11 +12,9 @@
 //#include "headers/admin_tools.h"
 int main()
 {
-	Client_dir *client_dir = new Client_dir(); 
-	Threadpool *tpool = new Threadpool(client_dir); 
-	std::thread server_thread = std::thread(listen_on_port, 4486, tpool); 
-	//std::thread admin_thread = std::thread(listen_for_admin, tpool, client_dir); 
-	//listen_on_port(4449, func); 
+	Client_dir *directory = new Client_dir(); 
+	Threadpool *tpool = new Threadpool(100); 
+	std::thread server_thread = std::thread(listen_on_port, 4491, tpool, directory); 
 	server_thread.join(); 
 	return 0; 	
 }

@@ -1,24 +1,14 @@
 #include "headers/sock_server.h"
 
-void client_entrypoint(int sockfd, Threadpool *tpool)
+void client_entrypoint(int sockfd, Threadpool *tpool, Client_dir *directory)
 {
-	//Sock_reader *reader = new Sock_reader(sock_fd); 
-	//Sock_writer *writer = new Sock_writer(sock_fd); 
+	Connection *connection =  new Connection(sockfd, directory); 
+	(*tpool).add_connection(connection); 
 
-	//Client_listener *listener = new Client_listener(reader); 
-	
-
-	//Client *cli = new Client(name, writer, listener); 
-	//ClientDirSingleton.get_singleton().add_to_dir(cli); 
-	//(*listener).listen_for_messages(); 
-	//Client *cli = new Client(writer, listener); 
-	
-	Client *cli = new Client(sockfd); 
-	(*tpool).add_client(cli); 
 
 }
 		
-void listen_on_port(int port_num, Threadpool *tpool)
+void listen_on_port(int port_num, Threadpool *tpool, Client_dir *directory)
 {
        	int server_fd;
         struct sockaddr_in client_addr, server_addr;
@@ -68,7 +58,7 @@ void listen_on_port(int port_num, Threadpool *tpool)
         {
                	int client_fd = accept(server_fd, (struct sockaddr *) &client_addr, &client_len);
 		setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(struct timeval));
-		client_entrypoint(client_fd, tpool); 
+		client_entrypoint(client_fd, tpool, directory); 
 		
         }
 }

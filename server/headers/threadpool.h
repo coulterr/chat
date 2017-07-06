@@ -11,24 +11,21 @@
 
 #include "../headers/client.h"
 #include "../headers/client_dir.h"
-bool process_login(Client *cli); 
-void start_listening(Client *cli); 
-
+#include "../headers/connection.h"
 
 class Threadpool
 {
 	private:
-		Client_dir *client_dir_; 
-		std::queue<Client*> client_queue_; 
+		std::queue<Connection*> connections_; 
 		std::vector<std::thread> threads_;
 		sem_t empty_; 
 		sem_t full_; 
 
 		 
 	public:
-		Threadpool(Client_dir *client_dir); 
+		Threadpool(int threadcount); 
 		void start_spinning(); 
-		void add_client(Client *cli); 
+		void add_connection(Connection *connection); 
 		~Threadpool();
 };
 #endif // THREADPOOL_H_INCLUDED

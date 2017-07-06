@@ -57,18 +57,17 @@ std::string Client::recv_msg()
 	while (goal > 0) {
 	
 		status = read(sockfd_, ((char *) &tmp) + sizeof(tmp) - goal, goal);
-		
+		std::cout << std::strerror(errno) << std::endl;	
 		if (status == -1)
 		{
-			//timeout or error?
-			//if (errno == EAGAIN) 
-			//{
+			if (errno == EAGAIN) 
+			{
 				 return "TIMEOUT"; 
-			//}
-			//else 
-			//{
-			//	return "ERROR"; 
-			//}
+			}
+			else 
+			{
+				return "ERROR"; 
+			}
 		}
 		else if (status == 0) 
 		{
@@ -78,6 +77,12 @@ std::string Client::recv_msg()
 	}
 	
 	int len = ntohl(tmp); 
+	
+	if (len <= 0)
+	{
+		return "ERROR"; 
+	}
+	
 	std::cout << len << std::endl;
 	char buf[len + 1];  
 	
@@ -88,15 +93,14 @@ std::string Client::recv_msg()
 	
 		if (status == -1)
 		{
-			//timeout or error?
-			//if (errno == EAGAIN) 
-			//{
+			if (errno == EAGAIN) 
+			{
 				 return "TIMEOUT"; 
-			//}
-			//else 
-			//{
-			//	return "ERROR"; 
-			//}
+			}
+			else 
+			{
+				return "ERROR"; 
+			}	
 		}
 		else if (status == 0) 
 		{

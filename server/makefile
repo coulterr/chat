@@ -1,4 +1,4 @@
-objects = main.o sock_server.o threadpool.o client.o client_dir.o #admin_tools.o
+objects = main.o sock_server.o threadpool.o client.o client_dir.o connection.o #admin_tools.o
 
 server: $(objects) 
 	g++ -o server $(objects) -std=c++11 -lpthread
@@ -12,6 +12,8 @@ client.o: client.cc headers/client.h
 	g++ -c -o client.o client.cc -std=c++11
 client_dir.o: client_dir.cc headers/client_dir.h
 	g++ -c -o client_dir.o client_dir.cc -std=c++11
+connection.o: connection.cc headers/connection.h
+	g++ -c -o connection.o connection.cc -std=c++11
 #admin_tools.o: admin_tools.cc headers/admin_tools.h
 #	g++ -c -o admin_tools.o admin_tools.cc -std=c++11
 clean: 
