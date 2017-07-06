@@ -1,0 +1,2 @@
+1. Change client_dir to client_directory (and all references) 
+2. Re-implement admin_tools (class-ify?) 
