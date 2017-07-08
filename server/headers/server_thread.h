@@ -12,17 +12,17 @@
 #include <thread>
 #include "../headers/threadpool.h"
 #include "../headers/connection.h"
-#include "../headers/client_dir.h"
+#include "../headers/client_directory.h"
 
 class Server_thread 
 {
 	private:	
 		int portnum; 
 		Threadpool *threadpool; 
-		Client_dir *directory; 
+		Client_directory *directory; 
 		std::thread *thread; 
 	public:
-		Server_thread(int portnum, Threadpool *threadpool, Client_dir *directory); 
+		Server_thread(int portnum, Threadpool *threadpool, Client_directory *directory); 
 		void start(); 
 		void listen_for_clients();
 		void spawn_connection(int sockfd);

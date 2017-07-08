@@ -1,6 +1,7 @@
 #include "headers/client.h"
 #include <cerrno>
 #include <cstring>
+
 Client::Client(std::string name, int sockfd) 
 {
 	name_ = name; 

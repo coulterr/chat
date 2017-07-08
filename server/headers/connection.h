@@ -10,15 +10,15 @@
 #include <semaphore.h>
 
 #include "../headers/client.h"
-#include "../headers/client_dir.h"
+#include "../headers/client_directory.h"
 
 class Connection
 {
 	private:
-		Client_dir *directory; 
+		Client_directory *directory; 
 		Client *cli; 
 	public:
-		Connection(int sockfd, Client_dir *directory);
+		Connection(int sockfd, Client_directory *directory);
 		bool process_login();
 		void listen_for_messages();
 		void start();

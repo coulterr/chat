@@ -1,4 +1,4 @@
-objects = main.o server_thread.o threadpool.o client.o client_dir.o connection.o #admin_tools.o
+objects = main.o server_thread.o threadpool.o client.o client_directory.o connection.o #admin_tools.o
 
 server: $(objects) 
 	g++ -o server $(objects) -std=c++11 -lpthread
@@ -10,8 +10,8 @@ threadpool.o: threadpool.cc headers/threadpool.h
 	g++ -c -o threadpool.o threadpool.cc -std=c++11 
 client.o: client.cc headers/client.h
 	g++ -c -o client.o client.cc -std=c++11
-client_dir.o: client_dir.cc headers/client_dir.h
-	g++ -c -o client_dir.o client_dir.cc -std=c++11
+client_directory.o: client_directory.cc headers/client_directory.h
+	g++ -c -o client_directory.o client_directory.cc -std=c++11
 connection.o: connection.cc headers/connection.h
 	g++ -c -o connection.o connection.cc -std=c++11
 #admin_tools.o: admin_tools.cc headers/admin_tools.h

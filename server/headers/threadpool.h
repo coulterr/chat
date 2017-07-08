@@ -10,7 +10,6 @@
 #include <semaphore.h>
 
 #include "../headers/client.h"
-#include "../headers/client_dir.h"
 #include "../headers/connection.h"
 
 class Threadpool

@@ -1,6 +1,6 @@
 #include "headers/server_thread.h"
 
-Server_thread::Server_thread(int portnum, Threadpool *threadpool, Client_dir *directory) 
+Server_thread::Server_thread(int portnum, Threadpool *threadpool, Client_directory *directory) 
 {
 	this -> portnum = portnum;
 	this -> threadpool = threadpool; 

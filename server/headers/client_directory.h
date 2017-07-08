@@ -1,5 +1,5 @@
-#ifndef CLIENT_DIR_H_INCLUDED
-#define CLIENT_DIR_H_INCLUDED
+#ifndef CLIENT_DIRECTORY_H_INCLUDED
+#define CLIENT_DIRECTORY_H_INCLUDED
 
 #include "../headers/client.h"
 #include <string>
@@ -7,18 +7,18 @@
 #include <map>
 #include <semaphore.h>
 
-class Client_dir
+class Client_directory
 {
 	private:
 		std::map<std::string, Client*> clients_;
 		sem_t lock_; 
 	public:
-		Client_dir(); 
+		Client_directory(); 
 		bool contains_client(std::string name); 
 		bool add_client(Client *cli); 
 		bool dispatch_msg(std::string name, std::string msg); 
 		void remove_client(std::string name); 
 		void list_clients(); 
-		~Client_dir();
+		~Client_directory();
 };
-#endif // CLIENT_DIR_H_INCLUDED
+#endif // CLIENT_DIRECTORY_H_INCLUDED

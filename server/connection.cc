@@ -1,6 +1,6 @@
 #include "headers/connection.h"
 
-Connection::Connection(int sockfd, Client_dir *directory)
+Connection::Connection(int sockfd, Client_directory *directory)
 {
 	this -> cli = new Client(sockfd); 
 	this -> directory = directory; 

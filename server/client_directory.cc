@@ -1,13 +1,13 @@
-#include "headers/client_dir.h"
+#include "headers/client_directory.h"
 
-Client_dir::Client_dir()
+Client_directory::Client_directory()
 {
 	clients_ = std::map<std::string, Client*>(); 
 	lock_ = sem_t();  		
 	sem_init(&lock_, 0, 1); 
 }
 
-bool Client_dir::contains_client(std::string name)
+bool Client_directory::contains_client(std::string name)
 {
 	if(clients_.find(name) == clients_.end()){
 		return false; 
@@ -16,7 +16,7 @@ bool Client_dir::contains_client(std::string name)
 	}
 }
 
-bool Client_dir::add_client(Client *cli)
+bool Client_directory::add_client(Client *cli)
 {
 	bool ret = true; 
 	sem_wait(&lock_); 
@@ -30,7 +30,7 @@ bool Client_dir::add_client(Client *cli)
 	return ret; 
 }
 
-bool Client_dir::dispatch_msg(std::string name, std::string msg)
+bool Client_directory::dispatch_msg(std::string name, std::string msg)
 {
 	bool ret = true; 
 	
@@ -45,7 +45,7 @@ bool Client_dir::dispatch_msg(std::string name, std::string msg)
 	return ret; 
 }
 
-void Client_dir::remove_client(std::string name)
+void Client_directory::remove_client(std::string name)
 {
 	sem_wait(&lock_); 
 
@@ -54,7 +54,7 @@ void Client_dir::remove_client(std::string name)
 	sem_post(&lock_); 
 }
 
-void Client_dir::list_clients()
+void Client_directory::list_clients()
 {
 	sem_wait(&lock_); 
 
@@ -69,7 +69,7 @@ void Client_dir::list_clients()
 	sem_post(&lock_); 
 }
 
-Client_dir::~Client_dir()
+Client_directory::~Client_directory()
 {
 }
 //TO BE IMPLEMENTED
