@@ -30,13 +30,13 @@ bool Client_directory::add_client(Client *cli)
 	return ret; 
 }
 
-bool Client_directory::dispatch_msg(std::string name, std::string msg)
+bool Client_directory::dispatch_message(std::string name, std::string message)
 {
 	bool ret = true; 
 	
 	sem_wait(&lock_); 	
 		if((*this).contains_client(name)) {
-			ret = (*clients_[name]).send_msg(msg); 	
+			ret = (*clients_[name]).send_message(message); 	
 		}else {
 			ret = false; 
 		}

@@ -1,4 +1,4 @@
-objects = main.o server_thread.o threadpool.o client.o client_directory.o connection.o admin_thread.o
+objects = main.o server_thread.o threadpool.o client.o client_directory.o connection.o admin_thread.o communicator.o
 
 server: $(objects) 
 	g++ -o server $(objects) -std=c++11 -lpthread
@@ -16,5 +16,7 @@ connection.o: connection.cc headers/connection.h
 	g++ -c -o connection.o connection.cc -std=c++11
 admin_thread.o: admin_thread.cc headers/admin_thread.h
 	g++ -c -o admin_thread.o admin_thread.cc -std=c++11
+communicator.o: communicator.cc headers/communicator.h
+	g++ -c -o communicator.o communicator.cc -std=c++11
 clean: 
 	rm server $(objects) 

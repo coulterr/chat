@@ -11,13 +11,15 @@
 #include <sys/socket.h>
 
 #include "client.h"
+#include "communicator.h"
 #include "client_directory.h"
 
 class Connection
 {
 	private:
 		Client_directory *directory; 
-		Client *cli; 
+		Client *client; 
+		Communicator *comm;
 	public:
 		Connection(int sockfd, Client_directory *directory);
 		bool process_login();

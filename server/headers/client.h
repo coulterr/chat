@@ -10,19 +10,20 @@
 #include <sys/socket.h>
 #include <arpa/inet.h> 
 
+#include "communicator.h"
+
 class Client
 {
 	private:
-		std::string name_; 
-		int sockfd_; 
+		std::string name; 
+		Communicator *comm; 
 
 	public:
-		Client(std::string name, int sockfd); 
-		Client(int sockfd); 
+		Client(Communicator *comm); 
 		void set_name(std::string name);  
 		std::string get_name();
-		bool send_msg(std::string msg); 
-		std::string recv_msg(); 
+		bool send_message(std::string message); 
+		std::string recv_message(); 
 		~Client();
 };
 #endif // CLIENT_H_INCLUDED
