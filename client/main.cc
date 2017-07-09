@@ -44,7 +44,7 @@ int main()
         struct hostent *server;
 
 	char hostname[] = "localhost";
-        portNum = 4447;
+        portNum = 4451;
         serverFD = socket(AF_INET, SOCK_STREAM, 0);
         server = gethostbyname(hostname);
 
