@@ -1,51 +1,6 @@
-1. Initialize ClientDirectory
-2. Spin up server thread 
-        - listens for new connections, starts new connection threads. 
+Database Frontend: 
+For: Persistent data (stored in downtime)
+Needs to...
+1. Register (takes uname and password)	
+2. Login (takes uname and password, validates) 
 
-3. The rest is for Threadpool:
-	- Threadpool is there for launching and cleaning up after threads 
-	- Maybe also for storing running threads for reference... perhaps by 
-	  admin utilities. 	
-	
-	New Connection: short-living login thread
-		- creates client object
-		- spawns listener thread 
-
-	Listener: long-living thread 
-		- mapped to client object (Not necessary. See below) 
-		- all messages handled on demand
-		- call to recvMsg() has timeout (long amount) that if triggered, 
-		  prompts an outgoing test from server (on failure, client is removed) 
-		- messages are sent through direct call to clientdir or some kind of  
-		  thread safe utilities, which will throw an exception if the recipient
-		  has been removed
-		 
-			 
-Threadpool: 
-	- Takes client as argument (no name yet) 
-	- Starts sign-in process
-	`	- if time out, stop
-	- On success, starts listening 
-		- timeout for checking connection
-		- Can be pre-empted...  
-
-
-ON SOCKET ERRORS: 
-	- Reading socket can return errnos for "RESOURCE TEMPORARILY UNAVAILABLE"
-	  (timeout) or "CONNECTION RESET BY PEER" (immediate termination) or 
-	  "CLEAN EXIT" (full exit process). Reading and getting these automatically
-	  closes the socket? Otherwise and remains open for reads? Uncertain...
-	  
-	  Sending to a CLOSED (not just disconnected) socket returns BROKEN PIPE   
-
-	- From stack overflow: 	
-	  	 
-		 	https://stackoverflow.com/questions/11436013/writing-to-a-closed-local-tcp-socket-not-failing
-		 	
-			@regularfry, Can you pl. see if you can add the following lines of code before your writes, 
-			int tcp_info_length; struct tcp_info tcp_info; tcp_info_length = sizeof(tcp_info) ;
-			getsockopt(client_fd, SOL_TCP, TCP_INFO, (void *)&tcp_info, (sockl en_t *)&tcp_info_length ); 
-			The member tcp_info.tcpi_state is having the current TCP state. I am getting the value 8(CLOSE_WAIT)
-			a 7(TCP_CLOSE) before/after the first write respectively.Can you use this information to handle this case. 
-			Pl. see the header file tcp.h in netinet folder for all the values of TCP states. 
-			https://www.softlab.ntua.gr/facilities/documentation/unix/unix-socket-faq/unix-socket-faq-2.html

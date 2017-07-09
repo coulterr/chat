@@ -13,7 +13,7 @@
 
 int main()
 {
-	const int PORT = 4456; 
+	const int PORT = 4457; 
 	const int THREADCOUNT = 100; 
 
 	Client_directory *directory = new Client_directory(); 

@@ -10,7 +10,7 @@
 #include <thread>
 #include <arpa/inet.h>
 
-const int PORT = 4456; 
+const int PORT = 4457; 
 
 void listen_for_messages(int serverFD)
 {
@@ -40,7 +40,7 @@ std::string getInput()
 
 int main()
 {
-        int serverFD, portNum, len;
+        int serverFD, portNum;
         struct sockaddr_in serverAddress;
         struct hostent *server;
 
@@ -60,6 +60,16 @@ int main()
         }
 
 	std::thread listen_thread(listen_for_messages, serverFD);
+	
+	int len; 
+	int32_t tmp; 
+	std::string session_type = "LOGIN"; 
+
+	len = session_type.length(); 
+	tmp = htonl(len); 
+	send(serverFD, &tmp, sizeof(tmp), 0);  
+	send(serverFD, (void *)session_type.c_str(), len, 0); 
+
 	while(true)
 	{	
 		std::string msg = getInput();  
@@ -67,8 +77,8 @@ int main()
 			close(serverFD); 
 			exit(0); 
 		}
-		int len = msg.length(); 
-		int32_t tmp = htonl(len); 
+		len = msg.length(); 
+		tmp = htonl(len); 
 		send(serverFD, &tmp, sizeof(tmp), 0);  
 		send(serverFD, (void *)msg.c_str(), len, 0); 
 	}

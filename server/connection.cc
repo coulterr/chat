@@ -46,16 +46,33 @@ void Connection::listen_for_messages()
 }
 
 void Connection::start()
-{	
-	if ((*this).process_login()) 
+{
+	std::string session_type = (*cli).recv_msg(); 
+	if (session_type.compare("REGISTER") == 0) 
 	{
-		(*directory).add_client(cli); 
-		(*this).listen_for_messages(); 
-		//clean and remove
-		(*directory).remove_client((*cli).get_name()); 
-		delete cli; 
-
+		
 	}
+	else if (session_type.compare("LOGIN") == 0) 
+	{
+	
+		if ((*this).process_login()) 
+		{
+			(*directory).add_client(cli); 
+			(*this).listen_for_messages(); 
+			(*directory).remove_client((*cli).get_name()); 
+		}
+	}
+
+	delete cli; 
+
+	//if ((*this).process_login()) 
+	//{
+	//	(*directory).add_client(cli); 
+	//	(*this).listen_for_messages(); 
+	//	//clean and remove
+	//	(*directory).remove_client((*cli).get_name()); 
+	//	delete cli; 
+	//}
 }
 
 
