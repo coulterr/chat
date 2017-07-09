@@ -25,7 +25,6 @@ void listen_for_messages(int serverFD)
 		buf[len] = 0; 
 		std::cout << std::string(buf) << std::endl; 
 	}
-
 }
 
 
@@ -44,7 +43,7 @@ int main()
         struct hostent *server;
 
 	char hostname[] = "localhost";
-        portNum = 4451;
+        portNum = 4455;
         serverFD = socket(AF_INET, SOCK_STREAM, 0);
         server = gethostbyname(hostname);
 

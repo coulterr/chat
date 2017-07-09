@@ -24,7 +24,6 @@ void Threadpool::start_spinning()
 	while(true){
 		sem_wait(&full_);
 		
-			std::cout << "Acquiring client..." << std::endl; 
 			Connection *connection = connections_.front();
 			connections_.pop();  
 		
@@ -38,7 +37,6 @@ void Threadpool::add_connection(Connection *connection)
 {
 	sem_wait(&empty_); 
 	{
-		std::cout << "Adding client..." << std::endl;
 		connections_.push(connection); 
 	}
 	sem_post(&full_); 

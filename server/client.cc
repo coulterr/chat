@@ -33,14 +33,14 @@ bool Client::send_msg(std::string msg)
 	status = send(sockfd_, &tmp, sizeof(tmp), MSG_NOSIGNAL); 
 	if (status == -1 || status == EPIPE)
 	{
-		std::cout << "On send(): ERROR:" << std::strerror(errno) << std::endl;  
+		//std::cout << "On send(): ERROR:" << std::strerror(errno) << std::endl;  
 		return false; 
 	}
 	
 	status = send(sockfd_, (void *) str, len, MSG_NOSIGNAL); 
 	if (status == -1 || status == EPIPE)
 	{
-		std::cout << "On send(): ERROR:" << std::strerror(errno) << std::endl;  
+		//std::cout << "On send(): ERROR:" << std::strerror(errno) << std::endl;  
 		return false; 
 	}
 
@@ -58,7 +58,7 @@ std::string Client::recv_msg()
 	while (goal > 0) {
 	
 		status = read(sockfd_, ((char *) &tmp) + sizeof(tmp) - goal, goal);
-		std::cout << std::strerror(errno) << std::endl;	
+		//std::cout << std::strerror(errno) << std::endl;	
 		if (status == -1)
 		{
 			if (errno == EAGAIN) 
@@ -84,7 +84,7 @@ std::string Client::recv_msg()
 		return "ERROR"; 
 	}
 	
-	std::cout << len << std::endl;
+	//std::cout << len << std::endl;
 	char buf[len + 1];  
 	
 	goal = len;  

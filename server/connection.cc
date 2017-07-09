@@ -17,24 +17,23 @@ void Connection::listen_for_messages()
 {
 	while(true)
 	{ 
-		std::cout << "Receiving from: " << (*cli).get_name() << std::endl; 
 		std::string msg = (*cli).recv_msg();
 		if (msg.compare("TIMEOUT") == 0)
 		{
 			if (!(*directory).dispatch_msg((*cli).get_name(), "KEEPALIVE"))
 			{
-				std::cout << "DIRTY SHUTDOWN" << std::endl;
+				//std::cout << "DIRTY SHUTDOWN" << std::endl;
 				break;  
 			}
 		}
 		else if (msg.compare("ERROR") == 0)
 		{
-			std::cout << "CLIENT LOST" << std::endl; 
+			//std::cout << "CLIENT LOST" << std::endl; 
 			break; 
 		}	
 		else if (msg.compare("CLOSED") == 0)
 		{
-			std::cout << "CLEAN EXIT" << std::endl; 
+			//std::cout << "CLEAN EXIT" << std::endl; 
 			break; 	
 		}
 		else {

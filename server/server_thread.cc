@@ -56,10 +56,7 @@ void Server_thread::listen_for_clients()
         }
 
 
-
         client_len = sizeof(client_addr);
-        fprintf(stderr, "Listening for clients...\n");
-
 
 	struct timeval tv; 
 	tv.tv_sec = 30;
