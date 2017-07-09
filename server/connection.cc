@@ -64,15 +64,6 @@ void Connection::start()
 	}
 
 	delete cli; 
-
-	//if ((*this).process_login()) 
-	//{
-	//	(*directory).add_client(cli); 
-	//	(*this).listen_for_messages(); 
-	//	//clean and remove
-	//	(*directory).remove_client((*cli).get_name()); 
-	//	delete cli; 
-	//}
 }
 
 
