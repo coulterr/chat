@@ -4,5 +4,9 @@ Needs to...
 1. Register (takes uname and password)	
 2. Login (takes uname and password, validates) 
 
+**Should be a single database handler class. Contains ephemeral information, and has private
+  functions for accessing persistent sqlite data.
+
+
 To create database with schema: 
 	$ sqlite3 database.db < database.schema
