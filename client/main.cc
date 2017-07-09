@@ -9,25 +9,10 @@
 #include <iostream> 
 #include <thread>
 #include <arpa/inet.h>
+#include "headers/listener.h"
+#include "headers/communicator.h"
 
-const int PORT = 4457; 
-
-void listen_for_messages(int serverFD)
-{
-	while(true){
-
-		ssize_t status; 
-		int32_t tmp; 
-
-		read(serverFD, &tmp, sizeof(tmp)); 
-
-		int len = ntohl(tmp); 
-		char buf[len + 1]; 
-		status = recvfrom(serverFD, (void *) buf, len, 0, NULL, NULL); 
-		buf[len] = 0; 
-		std::cout << std::string(buf) << std::endl; 
-	}
-}
+const int PORT = 4458; 
 
 
 std::string getInput()
@@ -40,13 +25,13 @@ std::string getInput()
 
 int main()
 {
-        int serverFD, portNum;
+        int socketfd, portNum;
         struct sockaddr_in serverAddress;
         struct hostent *server;
 
 	char hostname[] = "localhost";
         portNum = PORT;
-        serverFD = socket(AF_INET, SOCK_STREAM, 0);
+        socketfd = socket(AF_INET, SOCK_STREAM, 0);
         server = gethostbyname(hostname);
 
         bzero( (char *) &serverAddress, sizeof(serverAddress) );
@@ -54,34 +39,24 @@ int main()
         bcopy( (char *) server -> h_addr, (char *) &serverAddress.sin_addr.s_addr, server -> h_length);
         serverAddress.sin_port = htons(portNum);
 
-        if(connect(serverFD, (struct sockaddr *) &serverAddress, sizeof(serverAddress)) < 0){
+        if(connect(socketfd, (struct sockaddr *) &serverAddress, sizeof(serverAddress)) < 0){
                 fprintf(stderr, "ERROR: Could not connect.");
                 exit(0);
         }
 
-	std::thread listen_thread(listen_for_messages, serverFD);
-	
-	int len; 
-	int32_t tmp; 
-	std::string session_type = "LOGIN"; 
+	Communicator *comm = new Communicator(socketfd); 
 
-	len = session_type.length(); 
-	tmp = htonl(len); 
-	send(serverFD, &tmp, sizeof(tmp), 0);  
-	send(serverFD, (void *)session_type.c_str(), len, 0); 
+	(*comm).send_message(std::string("LOGIN")); 
+	(*comm).send_message(getInput()); 
 
-	while(true)
-	{	
-		std::string msg = getInput();  
-		if(msg.compare("close") == 0){
-			close(serverFD); 
-			exit(0); 
-		}
-		len = msg.length(); 
-		tmp = htonl(len); 
-		send(serverFD, &tmp, sizeof(tmp), 0);  
-		send(serverFD, (void *)msg.c_str(), len, 0); 
-	}
+	Listener listener = Listener(comm); 
+	listener.start_listening(); 
+
+	while(true){
+		(*comm).send_message(getInput()); 
+			
+	}; 
+
 }
 
 
