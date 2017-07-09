@@ -10,6 +10,8 @@
 #include <thread>
 #include <arpa/inet.h>
 
+const int PORT = 4456; 
+
 void listen_for_messages(int serverFD)
 {
 	while(true){
@@ -43,7 +45,7 @@ int main()
         struct hostent *server;
 
 	char hostname[] = "localhost";
-        portNum = 4455;
+        portNum = PORT;
         serverFD = socket(AF_INET, SOCK_STREAM, 0);
         server = gethostbyname(hostname);
 
