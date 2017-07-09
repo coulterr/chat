@@ -1,6 +1,8 @@
 #ifndef SERVER_THREAD_H_INCLUDED
 #define SERVER_THREAD_H_INCLUDED
 
+#include <functional>
+#include <thread>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,11 +10,10 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <functional>
-#include <thread>
-#include "../headers/threadpool.h"
-#include "../headers/connection.h"
-#include "../headers/client_directory.h"
+
+#include "threadpool.h"
+#include "connection.h"
+#include "client_directory.h"
 
 class Server_thread 
 {

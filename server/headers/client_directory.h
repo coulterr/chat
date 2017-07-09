@@ -1,11 +1,13 @@
 #ifndef CLIENT_DIRECTORY_H_INCLUDED
 #define CLIENT_DIRECTORY_H_INCLUDED
 
-#include "../headers/client.h"
 #include <string>
 #include <iostream>
 #include <map>
+
 #include <semaphore.h>
+
+#include "client.h"
 
 class Client_directory
 {

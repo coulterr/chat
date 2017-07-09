@@ -1,16 +1,17 @@
 #ifndef THREADPOOL_H_INCLUDED
 #define THREADPOOL_H_INCLUDED
 
-#include <sys/socket.h>
 #include <iostream>
 #include <string>
 #include <queue>
 #include <thread> 
 #include <vector>
-#include <semaphore.h>
 
-#include "../headers/client.h"
-#include "../headers/connection.h"
+#include <semaphore.h>
+#include <sys/socket.h>
+
+#include "client.h"
+#include "connection.h"
 
 class Threadpool
 {

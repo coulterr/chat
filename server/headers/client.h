@@ -1,12 +1,15 @@
 #ifndef CLIENT_H_INCLUDED
 #define CLIENT_H_INCLUDED
-#include <string.h>
+
 #include <string>
+#include <iostream>
+
+#include <string.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <unistd.h>
 #include <arpa/inet.h> 
-#include <iostream>
+
 class Client
 {
 	private:
