@@ -11,3 +11,6 @@ CREATE TABLE friend_entry (
 	FOREIGN KEY (owner_id) REFERENCES user(id), 
 	FOREIGN KEY (friend_id) REFERENCES user(id) 
 ); 
+
+INSERT INTO user (name, password) 
+VALUES ('Riley', 'xxx'); 

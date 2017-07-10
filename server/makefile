@@ -20,3 +20,11 @@ communicator.o: communicator.cc headers/communicator.h
 	g++ -c -o communicator.o communicator.cc -std=c++11
 clean: 
 	rm server $(objects) 
+dbtest: dbtest.o database.o
+
+dbtest.o: dbtest.cc
+	g++ -c -o dbtest.o dbtest.cc -std=c++11
+database.o: database.cc headers/database.h
+	g++ -c -o database.o database.cc -std=c++11
+dbtest: 
+	g++ -o dbtest dbtest.o database.o -std=c++11
