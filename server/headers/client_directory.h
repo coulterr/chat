@@ -12,12 +12,12 @@
 class Client_directory
 {
 	private:
-		std::map<std::string, Client*> clients_;
-		sem_t lock_; 
+		std::map<std::string, Client*> clients;
+		sem_t lock; 
 	public:
 		Client_directory(); 
 		bool contains_client(std::string name); 
-		bool add_client(Client *cli); 
+		bool add_client(Client &client); 
 		bool dispatch_message(std::string name, std::string message); 
 		void remove_client(std::string name); 
 		void list_clients(); 

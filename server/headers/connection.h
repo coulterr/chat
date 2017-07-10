@@ -16,15 +16,9 @@
 
 class Connection
 {
-	private:
-		Client_directory *directory; 
-		Client *client; 
-		Communicator *comm;
 	public:
-		Connection(int sockfd, Client_directory *directory);
-		bool process_login();
-		void listen_for_messages();
-		void start();
-		~Connection(); 
+		static bool process_login(Client &client, Client_directory &directory);
+		static void listen_for_messages(Client &client, Client_directory &directory);
+		static void start(Client &client, Client_directory &directory);
 };
 #endif // CONNECTION_H_INCLUDED

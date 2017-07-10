@@ -16,16 +16,17 @@
 class Threadpool
 {
 	private:
-		std::queue<Connection*> connections_; 
-		std::vector<std::thread> threads_;
-		sem_t empty_; 
-		sem_t full_; 
+		Client_directory &directory; 
+		std::queue<Client*> clients; 
+		std::vector<std::thread*> threads;
+		sem_t empty; 
+		sem_t full; 
 
 		 
 	public:
-		Threadpool(int threadcount); 
+		Threadpool(int threadcount, Client_directory &directory); 
 		void start_spinning(); 
-		void add_connection(Connection *connection); 
+		void add_client(int socketfd); 
 		~Threadpool();
 };
 #endif // THREADPOOL_H_INCLUDED

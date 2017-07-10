@@ -13,14 +13,14 @@
 
 int main()
 {
-	const int PORT = 4459;
+	const int PORT = 4467;
 	const int THREADCOUNT = 100; 
 
 	Client_directory *directory = new Client_directory(); 
-	Threadpool *threadpool = new Threadpool(THREADCOUNT); 
-	Server_thread server_thread = Server_thread(PORT, threadpool, directory); 
+	Threadpool *threadpool = new Threadpool(THREADCOUNT, *directory); 
+	Server_thread server_thread(PORT, *threadpool); 
 	server_thread.start();
-	Admin_thread admin_thread = Admin_thread(threadpool, directory); 
+	Admin_thread admin_thread(*threadpool, *directory); 
 	admin_thread.start(); 
 	std::cout << "Server running..." << std::endl; 
 

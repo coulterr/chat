@@ -1,6 +1,11 @@
 #ifndef ADMIN_THREAD_H
 #define ADMIN_THREAD_H
 
+
+#include <unistd.h>
+#include <functional> 
+
+
 #include <iostream>
 #include <string>
 #include <thread>
@@ -11,13 +16,13 @@
 class Admin_thread
 {
 	private: 
-		Threadpool *threadpool; 
-		Client_directory *directory; 
+		Threadpool threadpool; 
+		Client_directory &directory; 
 		std::thread *thread; 
 		void list_clients(); 
 		void listen_for_commands(); 
 	public: 
-		Admin_thread(Threadpool *threadpool, Client_directory *directory); 
+		Admin_thread(Threadpool &threadpool, Client_directory &directory); 
 		void start(); 
 		~Admin_thread(); 
 		

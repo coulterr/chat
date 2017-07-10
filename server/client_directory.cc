@@ -2,30 +2,30 @@
 
 Client_directory::Client_directory()
 {
-	clients_ = std::map<std::string, Client*>(); 
-	lock_ = sem_t();  		
-	sem_init(&lock_, 0, 1); 
+	clients = std::map<std::string, Client*>(); 
+	lock = sem_t();  		
+	sem_init(&lock, 0, 1); 
 }
 
 bool Client_directory::contains_client(std::string name)
 {
-	if(clients_.find(name) == clients_.end()){
+	if(clients.find(name) == clients.end()){
 		return false; 
 	}else{
 		return true; 
 	}
 }
 
-bool Client_directory::add_client(Client *cli)
+bool Client_directory::add_client(Client &client)
 {
 	bool ret = true; 
-	sem_wait(&lock_); 
-		if ((*this).contains_client((*cli).get_name())) {
+	sem_wait(&lock); 
+		if (contains_client(client.get_name())) {
 			ret = false; 			
 		}else {
-			clients_[(*cli).get_name()] = cli; 
+			clients[client.get_name()] = &client; 
 		}
-	sem_post(&lock_); 
+	sem_post(&lock); 
 
 	return ret; 
 }
@@ -34,39 +34,39 @@ bool Client_directory::dispatch_message(std::string name, std::string message)
 {
 	bool ret = true; 
 	
-	sem_wait(&lock_); 	
-		if((*this).contains_client(name)) {
-			ret = (*clients_[name]).send_message(message); 	
+	sem_wait(&lock); 	
+		if(contains_client(name)) {
+			ret = (*clients[name]).send_message(message); 	
 		}else {
 			ret = false; 
 		}
-	sem_post(&lock_); 
+	sem_post(&lock); 
 
 	return ret; 
 }
 
 void Client_directory::remove_client(std::string name)
 {
-	sem_wait(&lock_); 
+	sem_wait(&lock); 
 
-		clients_.erase(name); 
+		clients.erase(name); 
 	
-	sem_post(&lock_); 
+	sem_post(&lock); 
 }
 
 void Client_directory::list_clients()
 {
-	sem_wait(&lock_); 
+	sem_wait(&lock); 
 
 		std::map<std::string, Client*>::iterator i; 
 		int count = 1; 
-		for(i = (clients_).begin(); i != (clients_).end(); ++i)
+		for(i = (clients).begin(); i != (clients).end(); ++i)
 		{
 			std::cout << count << ": " << (*(*i).second).get_name() << std::endl;  	
 			++count; 
 		}	
 		
-	sem_post(&lock_); 
+	sem_post(&lock); 
 }
 
 Client_directory::~Client_directory()

@@ -1,15 +1,15 @@
 #include "headers/admin_thread.h"
 
-Admin_thread::Admin_thread(Threadpool *threadpool, Client_directory *directory)
+Admin_thread::Admin_thread(Threadpool &threadpool, Client_directory &directory)
+: threadpool(threadpool), directory(directory)
 {
-	this -> threadpool = threadpool; 
-	this -> directory = directory; 
+
 }
 
 
 void Admin_thread::list_clients()
 {
-	(*directory).list_clients(); 
+	directory.list_clients(); 
 }
 
 

@@ -16,10 +16,10 @@ class Client
 {
 	private:
 		std::string name; 
-		Communicator *comm; 
+		Communicator comm; 
 
 	public:
-		Client(Communicator *comm); 
+		Client(int socketfd); 
 		void set_name(std::string name);  
 		std::string get_name();
 		bool send_message(std::string message); 

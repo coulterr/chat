@@ -19,14 +19,13 @@ class Server_thread
 {
 	private:	
 		int portnum; 
-		Threadpool *threadpool; 
-		Client_directory *directory; 
+		Threadpool &threadpool; 
 		std::thread *thread; 
 	public:
-		Server_thread(int portnum, Threadpool *threadpool, Client_directory *directory); 
+		Server_thread(int portnum, Threadpool &threadpool); 
 		void start(); 
 		void listen_for_clients();
-		void spawn_connection(int sockfd);
+		void spawn_connection(int socketfd);
 		~Server_thread(); 
 }; 
 #endif // SERVER_THREAD_H_INCLUDED

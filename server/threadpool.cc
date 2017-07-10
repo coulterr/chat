@@ -2,18 +2,14 @@
 
 
 
-Threadpool::Threadpool(int threadcount)
+Threadpool::Threadpool(int threadcount, Client_directory &directory)
+: directory(directory) 
 {
-	connections_ = std::queue<Connection*>(); 
-	threads_ = std::vector<std::thread>(); 	
-	empty_ = sem_t(); 
-	full_ = sem_t(); 
-
-	sem_init(&empty_, 0, threadcount); 
-	sem_init(&full_, 0, 0);  
+	sem_init(&empty, 0, threadcount); 
+	sem_init(&full, 0, 0);  
 	
 	for(int i = 0; i < threadcount; ++i){
-		threads_.push_back(std::thread(&Threadpool::start_spinning, this)); 	
+		threads.push_back(new std::thread(&Threadpool::start_spinning, this)); 	
 	}
 	 
 }
@@ -22,24 +18,26 @@ void Threadpool::start_spinning()
 {
 	 
 	while(true){
-		sem_wait(&full_);
+		sem_wait(&full);
 		
-			Connection *connection = connections_.front();
-			connections_.pop();  
+			Client *client = clients.front();
+			clients.pop();  
 		
-		sem_post(&empty_); 
+		sem_post(&empty); 
 
-		(*connection).start(); 
+		Connection::start(*client, directory); 
+		delete client; 
 	}
 }
 
-void Threadpool::add_connection(Connection *connection)
+void Threadpool::add_client(int socketfd)
 {
-	sem_wait(&empty_); 
+	sem_wait(&empty); 
 	{
-		connections_.push(connection); 
+		Client *client = new Client(socketfd); 
+		clients.push(client); 
 	}
-	sem_post(&full_); 
+	sem_post(&full); 
 }
 
 Threadpool::~Threadpool()

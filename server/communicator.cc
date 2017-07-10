@@ -1,8 +1,8 @@
 #include "headers/communicator.h"
 
 Communicator::Communicator(int socketfd)
+: socketfd(socketfd)
 {
-	this -> socketfd = socketfd; 
 }
 
 bool Communicator::send_message(std::string message)
