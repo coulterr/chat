@@ -8,8 +8,9 @@ Database::Database(std::string path)
 
 void Database::get_user_by_id(int id)
 {
-	std::string name, password; 
-	const char query[] = "SELECT name, password FROM user WHERE id=" + id + ";"; 
+	std::string name, password;
+	std::string query_string = std::string("SELECT name, password FROM user WHERE id=") + std::to_string(id) + ";";   
+	const char *query = (const char *) query_string.c_str(); 
 	sqlite3_stmt *statement; 
 	sqlite3_prepare(database, query, -1, &statement, NULL); 
 	//do stuff with that statement

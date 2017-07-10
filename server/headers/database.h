@@ -13,7 +13,7 @@ class Database
 		const int NAME_INDEX = 0; 
 		const int PASSWORD_INDEX = 1; 
 	public:
-		Database(const char *path); 
+		Database(std::string path); 
 		void get_user_by_id(int id); 
 		~Database(); 
 
