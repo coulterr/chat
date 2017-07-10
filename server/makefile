@@ -1,4 +1,4 @@
-objects = main.o server_thread.o threadpool.o client.o client_directory.o connection.o admin_thread.o communicator.o
+objects = main.o server_thread.o threadpool.o client.o client_directory.o connection.o admin_thread.o communicator.o 
 
 server: $(objects) 
 	g++ -o server $(objects) -std=c++11 -lpthread
@@ -20,11 +20,18 @@ communicator.o: communicator.cc headers/communicator.h
 	g++ -c -o communicator.o communicator.cc -std=c++11
 clean: 
 	rm server $(objects) 
-dbtest: dbtest.o database.o
+
+
+
+dbtest: dbtest.o database.o sqlite3.o
 
 dbtest.o: dbtest.cc
 	g++ -c -o dbtest.o dbtest.cc -std=c++11
 database.o: database.cc headers/database.h
-	g++ -c -o database.o database.cc -std=c++11 -sqlite3
+	g++ -c -o database.o database.cc -std=c++11 
+sqlite3.o: sqlite3.c headers/sqlite3.h
+	gcc -c -o sqlite3.o sqlite3.c 
 dbtest: 
-	g++ -o dbtest dbtest.o database.o -std=c++11 -sqlite3
+	g++ -o dbtest dbtest.o database.o sqlite3.o -std=c++11 -lpthread -ldl
+clean_dbtest:
+	rm dbtest dbtest.o database.o sqlite3.o 
