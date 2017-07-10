@@ -12,7 +12,7 @@
 #include "headers/listener.h"
 #include "headers/communicator.h"
 
-const int PORT = 4467;
+const int PORT = 4458; 
 
 
 std::string getInput()
