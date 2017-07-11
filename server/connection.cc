@@ -1,13 +1,18 @@
 #include "headers/connection.h"
 
-bool Connection::process_login(Client &client, Client_directory &directory)
+Connection::Connection(int socketfd, Client_directory &directory)
+:client(socketfd), directory(directory)
+{
+}
+
+bool Connection::process_login()
 {
 	std::string name = client.recv_message(); 
 	client.set_name(name); 
 	return true; 
 }
 
-void Connection::listen_for_messages(Client &client, Client_directory &directory) 
+void Connection::listen_for_messages() 
 {
 	while(true)
 	{ 
@@ -39,7 +44,7 @@ void Connection::listen_for_messages(Client &client, Client_directory &directory
 	}
 }
 
-void Connection::start(Client &client, Client_directory &directory)
+void Connection::start()
 {
 	std::string session_type = client.recv_message(); 
 	if (session_type.compare("REGISTER") == 0) 
@@ -49,12 +54,13 @@ void Connection::start(Client &client, Client_directory &directory)
 	else if (session_type.compare("LOGIN") == 0) 
 	{
 	
-		if (process_login(client, directory)) 
+		if (process_login()) 
 		{
 			directory.add_client(client); 
-			listen_for_messages(client, directory); 
+			listen_for_messages(); 
 			directory.remove_client(client.get_name()); 
 		}
 	}
 }
 
+Connection::~Connection(){}; 

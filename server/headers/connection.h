@@ -16,9 +16,14 @@
 
 class Connection
 {
+	private: 
+		Client client; 
+		Client_directory &directory; 
 	public:
-		static bool process_login(Client &client, Client_directory &directory);
-		static void listen_for_messages(Client &client, Client_directory &directory);
-		static void start(Client &client, Client_directory &directory);
+		Connection(int socketfd, Client_directory &directory); 
+		bool process_login();
+		void listen_for_messages();
+		void start();
+		~Connection(); 
 };
 #endif // CONNECTION_H_INCLUDED

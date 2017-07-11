@@ -13,12 +13,12 @@
 
 int main()
 {
-	const int PORT = 4467;
+	const int PORT = 4444;
 	const int THREADCOUNT = 100; 
 
 	Client_directory *directory = new Client_directory(); 
-	Threadpool *threadpool = new Threadpool(THREADCOUNT, *directory); 
-	Server_thread server_thread(PORT, *threadpool); 
+	Threadpool *threadpool = new Threadpool(THREADCOUNT); 
+	Server_thread server_thread(PORT, *threadpool, *directory); 
 	server_thread.start();
 	Admin_thread admin_thread(*threadpool, *directory); 
 	admin_thread.start(); 

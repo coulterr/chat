@@ -20,9 +20,10 @@ class Server_thread
 	private:	
 		int portnum; 
 		Threadpool &threadpool; 
+		Client_directory &directory;
 		std::thread *thread; 
 	public:
-		Server_thread(int portnum, Threadpool &threadpool); 
+		Server_thread(int portnum, Threadpool &threadpool, Client_directory &directory); 
 		void start(); 
 		void listen_for_clients();
 		void spawn_connection(int socketfd);

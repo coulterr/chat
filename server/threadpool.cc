@@ -2,8 +2,7 @@
 
 
 
-Threadpool::Threadpool(int threadcount, Client_directory &directory)
-: directory(directory) 
+Threadpool::Threadpool(int threadcount)
 {
 	sem_init(&empty, 0, threadcount); 
 	sem_init(&full, 0, 0);  
@@ -20,22 +19,21 @@ void Threadpool::start_spinning()
 	while(true){
 		sem_wait(&full);
 		
-			Client *client = clients.front();
-			clients.pop();  
+			Connection *connection = connections.front();
+			connections.pop();  
 		
 		sem_post(&empty); 
 
-		Connection::start(*client, directory); 
-		delete client; 
+		(*connection).start(); 
+		delete connection; 
 	}
 }
 
-void Threadpool::add_client(int socketfd)
+void Threadpool::add_connection(Connection *connection)
 {
 	sem_wait(&empty); 
 	{
-		Client *client = new Client(socketfd); 
-		clients.push(client); 
+		connections.push(connection); 
 	}
 	sem_post(&full); 
 }
