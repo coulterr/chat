@@ -10,3 +10,21 @@ Needs to...
 
 To create database with schema: 
 	$ sqlite3 database.db < database.schema
+
+Database access plan: 
+1. On login, client send uname and password. In server's Connection class, server should use 
+   DatabaseAccessor class to call accessor.get_user_data(), which makes a synchronous database 
+   query (okay to hang for client, since it's the login event), and which returns a User 
+   object (probably a pointer). User object is then handed to the relevant client. (or is it?)  
+2. On friend list updates, client sends uname of new friend. In server's Connection class, 
+   update client's User object immediately, then send async update to DatabaseAccesor. After
+   User object update, get status of new friend and send to client being serviced. 
+
+
+If scaled...
+- Actions taken through ClientDirectory would have to go through some other middleman, 
+  which contains information about ALL online/offline users, and if online, addresses of 
+  application servers. If user is local, message would be processed through ClientDirectory 
+  functions. Otherwise, it would be forwarded to a foreign application server. 
+- Events like login, logout, add friend, register... data would be send to remote master
+  database, then propagate down, rather than be sent directly to local database. 
