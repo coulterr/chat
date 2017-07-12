@@ -1,4 +1,6 @@
-objects = main.o server_thread.o threadpool.o client.o client_directory.o connection.o admin_thread.o communicator.o data_accessor.o user.o sqlite3.o
+objects = main.o server_thread.o threadpool.o client.o client_directory.o \
+	  connection.o admin_thread.o communicator.o data_accessor.o user.o \
+	  friend_request.o friend_entry.o sqlite3.o 
 
 server: $(objects) 
 	g++ -o server $(objects) -std=c++11 -lpthread -ldl
@@ -22,6 +24,10 @@ data_accessor.o: data_accessor.cc headers/data_accessor.h
 	g++ -c -o data_accessor.o data_accessor.cc -std=c++11 
 user.o: user.cc headers/user.h
 	g++ -c -o user.o user.cc -std=c++11
+friend_request.o: friend_request.cc headers/friend_request.h 
+	g++ -c -o friend_request.o friend_request.cc -std=c++11
+friend_entry.o: friend_entry.cc headers/friend_entry.h 
+	g++ -c -o friend_entry.o friend_entry.cc -std=c++11
 sqlite3.o: sqlite3.c headers/sqlite3.h
 	gcc -c -o sqlite3.o sqlite3.c 
 clean: 
