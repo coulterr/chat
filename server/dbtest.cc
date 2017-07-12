@@ -11,7 +11,12 @@ int main()
 		(*user).print(); 
 	}
 
-	accessor.add_user(std::string("Bob"), std::string("yyy")); 
+	bool success = accessor.add_user(std::string("Bob"), std::string("yyy")); 
+	if (success) {
+		std::cout << "NICE!" << std::endl; 
+	}else {
+		std::cout << "FAILURE!" << std::endl;
+	}
 
 	
 }

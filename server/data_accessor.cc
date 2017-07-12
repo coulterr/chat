@@ -33,13 +33,20 @@ void Data_accessor::get_user_by_id(int id)
 
 bool Data_accessor::add_user(std::string name, std::string password) 
 {
-	sqlite3_stmt *statement; 
-	sqlite3_prepare_v2(database, (const char *) ADD_USER_STMT.c_str(), -1, &statement, NULL); 
-	sqlite3_bind_text(statement, 1, (const char *) name.c_str(), -1, 0); 		
-	sqlite3_bind_text(statement, 2, (const char *) password.c_str(), -1, 0); 
-	int status = sqlite3_step(statement); 
-	if(status == SQLITE_DONE) return true; 
-	return false; 			
+	User *user = get_user_by_name(name); 
+
+	if(user == NULL) {
+		sqlite3_stmt *statement; 
+		sqlite3_prepare_v2(database, (const char *) ADD_USER_STMT.c_str(), -1, &statement, NULL); 
+		sqlite3_bind_text(statement, 1, (const char *) name.c_str(), -1, 0); 		
+		sqlite3_bind_text(statement, 2, (const char *) password.c_str(), -1, 0); 
+		int status = sqlite3_step(statement); 
+		sqlite3_finalize(statement); 
+		return true;
+	}else {
+		delete user; 
+		return false;
+	}
 }
 User *Data_accessor::get_user_by_name(std::string name)
 {
