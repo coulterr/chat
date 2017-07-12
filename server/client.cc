@@ -6,16 +6,6 @@ Client::Client(int socketfd)
 {
 }
 
-void Client::set_name(std::string name)
-{
-	this -> name = name; 
-}
-
-std::string Client::get_name()
-{
-	return name; 
-}
-
 bool Client::send_message(std::string message)
 { 
 	return comm.send_message(message); 

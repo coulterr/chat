@@ -20,8 +20,6 @@ class Client
 
 	public:
 		Client(int socketfd); 
-		void set_name(std::string name);  
-		std::string get_name();
 		bool send_message(std::string message); 
 		std::string recv_message(); 
 		~Client();

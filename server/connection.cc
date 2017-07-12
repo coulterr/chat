@@ -19,7 +19,7 @@ void Connection::listen_for_messages()
 		std::string message = client.recv_message();
 		if (message.compare("TIMEOUT") == 0)
 		{
-			if (!directory.dispatch_message((*user).get_name(), "KEEPALIVE"))
+			if (!directory.dispatch_message((*user).get_id(), "KEEPALIVE"))
 			{
 				//std::cout << "DIRTY SHUTDOWN" << std::endl;
 				break;  
@@ -36,10 +36,11 @@ void Connection::listen_for_messages()
 			break; 	
 		}
 		else {
-			std::string recipient = message.substr(0, message.find_first_of(" ", 0));
+			std::string recipient_str = message.substr(0, message.find_first_of(" ", 0));
+			int recipient_id = std::stoi(recipient_str, NULL, 0); 
 			message = message.substr(message.find_first_of(" ", 0), message.length());  
-			message = (*user).get_name() + ": " + message;
-			directory.dispatch_message(recipient, message); 
+			message = std::to_string((*user).get_id()) + ": " + message;
+			directory.dispatch_message(recipient_id, message); 
 		}
 	}
 }
@@ -56,11 +57,13 @@ void Connection::start()
 	
 		if (process_login()) 
 		{
-			directory.add_client((*user).get_name(), client); 
+			directory.add_client((*user).get_id(), client); 
 			listen_for_messages(); 
-			directory.remove_client((*user).get_name()); 
+			directory.remove_client((*user).get_id()); 
 		}
 	}
 }
 
-Connection::~Connection(){}; 
+Connection::~Connection(){
+	delete user; 	
+}; 
