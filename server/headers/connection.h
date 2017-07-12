@@ -13,14 +13,16 @@
 #include "client.h"
 #include "communicator.h"
 #include "client_directory.h"
+#include "Data_accessor.h"
 
 class Connection
 {
 	private: 
 		Client client; 
 		Client_directory &directory; 
+		Data_accessor &accessor; 
 	public:
-		Connection(int socketfd, Client_directory &directory); 
+		Connection(int socketfd, Client_directory &directory, Data_accessor &accessor); 
 		bool process_login();
 		void listen_for_messages();
 		void start();

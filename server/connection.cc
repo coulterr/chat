@@ -1,7 +1,7 @@
 #include "headers/connection.h"
 
-Connection::Connection(int socketfd, Client_directory &directory)
-:client(socketfd), directory(directory)
+Connection::Connection(int socketfd, Client_directory &directory, Data_accessor &accessor)
+:client(socketfd), directory(directory), accessor(accessor)
 {
 }
 

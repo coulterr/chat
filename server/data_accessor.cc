@@ -1,13 +1,13 @@
-#include "headers/database.h"
+#include "headers/data_accessor.h"
 #include "headers/sqlite3.h"
 
-Database::Database(std::string path)
+Data_accessor::Data_accessor(std::string path)
 {		
 	sqlite3_open(path.c_str(), &database); 
 
 }
 
-void Database::get_user_by_id(int id)
+void Data_accessor::get_user_by_id(int id)
 {
 	std::string name, password;
 	
@@ -29,8 +29,25 @@ void Database::get_user_by_id(int id)
 	std::cout << name << ": " << password << std::endl; 
 }
 
+User *Data_accessor::get_user_by_name(std::string name)
+{
+	sqlite3_stmt *statement; 
+	sqlite3_prepare(database, GET_USER_STMT, -1, &statement, NULL); 
+	sqlite3_bind_text(statement, 1, (const char *) name.c_str(), strlen(name.c_str()), NULL); 
+	sqlite3_step(statement); 
 
-Database::~Database()
+	int id = sqlite3_column_int(statement, ID_INDEX); 
+	std::string password((char *) sqlite3_column_blob(statement, PASSWORD_INDEX)); 
+
+	sqlite3_step(statement); 
+	sqlite3_finalize(statement); 
+
+	User *user = new User(id, name, password); 
+	return user; 
+	
+}
+
+Data_accessor::~Data_accessor()
 {
 	sqlite3_close(database); 
 }
