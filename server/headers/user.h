@@ -2,7 +2,7 @@
 #define USER_H
 
 #include <string>
-
+#include <iostream>
 
 class User
 {
@@ -13,6 +13,7 @@ class User
 	public: 
 		User(int id, std::string name, std::string password); 
 		bool validate_password(std::string attempt); 
+		void print(); 
 		~User(); 
 };
 

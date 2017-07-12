@@ -23,7 +23,7 @@ clean:
 
 
 
-dbtest: dbtest.o data_accessor.o sqlite3.o
+dbtest: dbtest.o data_accessor.o user.o sqlite3.o
 
 dbtest.o: dbtest.cc
 	g++ -c -o dbtest.o dbtest.cc -std=c++11
@@ -34,6 +34,6 @@ user.o: user.cc headers/user.h
 sqlite3.o: sqlite3.c headers/sqlite3.h
 	gcc -c -o sqlite3.o sqlite3.c 
 dbtest: 
-	g++ -o dbtest dbtest.o data_accessor.o sqlite3.o -std=c++11 -lpthread -ldl
+	g++ -o dbtest dbtest.o data_accessor.o user.o sqlite3.o -std=c++11 -lpthread -ldl
 clean_dbtest:
-	rm dbtest dbtest.o data_accessor.o sqlite3.o 
+	rm dbtest dbtest.o data_accessor.o user.o sqlite3.o 

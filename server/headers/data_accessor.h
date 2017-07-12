@@ -16,7 +16,7 @@ class Data_accessor
 		const int ID_INDEX = 0; 
 		const int NAME_INDEX = 0; 
 		const int PASSWORD_INDEX = 1; 
-		static char const *GET_USER_STMT = "SELECT * FROM user WHERE name=\"?name\";"; 
+		static const std::string GET_USER_STMT;
 	public:
 		Data_accessor(std::string path); 
 		void get_user_by_id(int id); 
