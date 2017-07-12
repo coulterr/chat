@@ -6,16 +6,17 @@ CREATE TABLE user (
 
 CREATE TABLE friend_entry (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
-	friend_a INTEGER NOT NULL,
-	friend_b INTEGER NOT NULL,
-	FOREIGN KEY (friend_a) REFERENCES user(id), 
-	FOREIGN KEY (friend_b) REFERENCES user(id) 
+	owner INTEGER NOT NULL,
+	user INTEGER NOT NULL,
+	FOREIGN KEY (owner) REFERENCES user(id), 
+	FOREIGN KEY (user) REFERENCES user(id) 
 ); 
 
 CREATE TABLE friend_request (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
 	sender INTEGER NOT NULL, 
 	recipient INTEGER NOT NULL, 
+	date INTEGER NOT NULL, 
 	FOREIGN KEY (sender) REFERENCES user(id), 
 	FOREIGN KEY (recipient) REFERENCES user(id)
 ); 
