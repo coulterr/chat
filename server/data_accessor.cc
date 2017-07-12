@@ -5,43 +5,52 @@ const std::string Data_accessor::GET_USER_STMT = std::string("SELECT id, passwor
 const std::string Data_accessor::ADD_USER_STMT = std::string("INSERT INTO user (name, password) VALUES (?, ?);");
 Data_accessor::Data_accessor(std::string path)
 {		
+	sem_init(&lock, 0, 1); 
 	sqlite3_open(path.c_str(), &database); 
 
 }
 
 void Data_accessor::get_user_by_id(int id)
 {
-	std::string name, password;
+	sem_wait(&lock);
+		
+		std::string name, password;
+		
+		std::string query_string = std::string("SELECT name, password FROM user WHERE id=\'") + std::to_string(id) + "\';";   
+		const char *query = (const char *) query_string.c_str(); 
+		
+		sqlite3_stmt *statement; 
+		sqlite3_prepare(database, query, -1, &statement, NULL); 
+		
+		//do stuff with that statement
+		sqlite3_step(statement); 
+		
+		name = std::string((char *)sqlite3_column_blob(statement, NAME_INDEX));
+		password = std::string((char *)sqlite3_column_blob(statement, PASSWORD_INDEX));
+		
+		sqlite3_step(statement); 
+		sqlite3_finalize(statement); 
+		
+		std::cout << name << ": " << password << std::endl; 
 	
-	std::string query_string = std::string("SELECT name, password FROM user WHERE id=\'") + std::to_string(id) + "\';";   
-	const char *query = (const char *) query_string.c_str(); 
-	
-	sqlite3_stmt *statement; 
-	sqlite3_prepare(database, query, -1, &statement, NULL); 
-	
-	//do stuff with that statement
-	sqlite3_step(statement); 
-	
-	name = std::string((char *)sqlite3_column_blob(statement, NAME_INDEX));
-	password = std::string((char *)sqlite3_column_blob(statement, PASSWORD_INDEX));
-	
-	sqlite3_step(statement); 
-	sqlite3_finalize(statement); 
-	
-	std::cout << name << ": " << password << std::endl; 
+	sem_post(&lock); 
 }
 
 bool Data_accessor::add_user(std::string name, std::string password) 
 {
 	User *user = get_user_by_name(name); 
-
+	
 	if(user == NULL) {
-		sqlite3_stmt *statement; 
-		sqlite3_prepare_v2(database, (const char *) ADD_USER_STMT.c_str(), -1, &statement, NULL); 
-		sqlite3_bind_text(statement, 1, (const char *) name.c_str(), -1, 0); 		
-		sqlite3_bind_text(statement, 2, (const char *) password.c_str(), -1, 0); 
-		int status = sqlite3_step(statement); 
-		sqlite3_finalize(statement); 
+		sem_wait(&lock);
+			
+			sqlite3_stmt *statement; 
+			sqlite3_prepare_v2(database, (const char *) ADD_USER_STMT.c_str(), -1, &statement, NULL); 
+			sqlite3_bind_text(statement, 1, (const char *) name.c_str(), -1, 0); 		
+			sqlite3_bind_text(statement, 2, (const char *) password.c_str(), -1, 0); 
+			int status = sqlite3_step(statement); 
+			sqlite3_finalize(statement); 
+		
+		sem_post(&lock);
 		return true;
 	}else {
 		delete user; 
@@ -50,18 +59,21 @@ bool Data_accessor::add_user(std::string name, std::string password)
 }
 User *Data_accessor::get_user_by_name(std::string name)
 {
-	sqlite3_stmt *statement; 
-	sqlite3_prepare_v2(database, (const char *) GET_USER_STMT.c_str(), -1, &statement, NULL); 
-	sqlite3_bind_text(statement, 1, (const char *) name.c_str(), -1, 0); 
-	int status = sqlite3_step(statement); 
-	if(status == SQLITE_DONE) return NULL; 
+	sem_wait(&lock);
+		
+		sqlite3_stmt *statement; 
+		sqlite3_prepare_v2(database, (const char *) GET_USER_STMT.c_str(), -1, &statement, NULL); 
+		sqlite3_bind_text(statement, 1, (const char *) name.c_str(), -1, 0); 
+		int status = sqlite3_step(statement); 
+		if(status == SQLITE_DONE) return NULL; 
 
-	int id = sqlite3_column_int(statement, ID_INDEX); 
-	std::string password((char *) sqlite3_column_blob(statement, PASSWORD_INDEX)); 
+		int id = sqlite3_column_int(statement, ID_INDEX); 
+		std::string password((char *) sqlite3_column_blob(statement, PASSWORD_INDEX)); 
 
-	sqlite3_step(statement); 
-	sqlite3_finalize(statement); 
+		sqlite3_step(statement); 
+		sqlite3_finalize(statement); 
 
+	sem_post(&lock);
 	User *user = new User(id, name, password); 
 	return user; 
 }

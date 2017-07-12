@@ -6,6 +6,7 @@
 
 #include <string.h>
 #include <sqlite3.h>
+#include <semaphore.h>
 
 #include "user.h"
 
@@ -16,6 +17,7 @@ class Data_accessor
 		const int ID_INDEX = 0; 
 		const int NAME_INDEX = 0; 
 		const int PASSWORD_INDEX = 1; 
+		sem_t lock; 
 		static const std::string GET_USER_STMT;
 		static const std::string ADD_USER_STMT; 
 	public:
