@@ -14,6 +14,7 @@
 #include "threadpool.h"
 #include "connection.h"
 #include "client_directory.h"
+#include "data_accessor.h"
 
 class Server_thread 
 {
@@ -21,9 +22,10 @@ class Server_thread
 		int portnum; 
 		Threadpool &threadpool; 
 		Client_directory &directory;
+		Data_accessor &accessor; 
 		std::thread *thread; 
 	public:
-		Server_thread(int portnum, Threadpool &threadpool, Client_directory &directory); 
+		Server_thread(int portnum, Threadpool &threadpool, Client_directory &directory, Data_accessor &accessor); 
 		void start(); 
 		void listen_for_clients();
 		void spawn_connection(int socketfd);

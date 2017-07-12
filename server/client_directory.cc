@@ -16,14 +16,14 @@ bool Client_directory::contains_client(std::string name)
 	}
 }
 
-bool Client_directory::add_client(Client &client)
+bool Client_directory::add_client(std::string name, Client &client)
 {
 	bool ret = true; 
 	sem_wait(&lock); 
-		if (contains_client(client.get_name())) {
+		if (contains_client(name)) {
 			ret = false; 			
 		}else {
-			clients[client.get_name()] = &client; 
+			clients[name] = &client; 
 		}
 	sem_post(&lock); 
 
@@ -62,7 +62,7 @@ void Client_directory::list_clients()
 		int count = 1; 
 		for(i = (clients).begin(); i != (clients).end(); ++i)
 		{
-			std::cout << count << ": " << (*(*i).second).get_name() << std::endl;  	
+			std::cout << count << ": " << (*i).first << std::endl;  	
 			++count; 
 		}	
 		

@@ -1,7 +1,7 @@
-objects = main.o server_thread.o threadpool.o client.o client_directory.o connection.o admin_thread.o communicator.o 
+objects = main.o server_thread.o threadpool.o client.o client_directory.o connection.o admin_thread.o communicator.o data_accessor.o user.o sqlite3.o
 
 server: $(objects) 
-	g++ -o server $(objects) -std=c++11 -lpthread
+	g++ -o server $(objects) -std=c++11 -lpthread -ldl
 main.o: main.cc 
 	g++ -c -o main.o main.cc -std=c++11
 server_thread.o: server_thread.cc headers/server_thread.h
@@ -18,6 +18,12 @@ admin_thread.o: admin_thread.cc headers/admin_thread.h
 	g++ -c -o admin_thread.o admin_thread.cc -std=c++11
 communicator.o: communicator.cc headers/communicator.h
 	g++ -c -o communicator.o communicator.cc -std=c++11
+data_accessor.o: data_accessor.cc headers/data_accessor.h
+	g++ -c -o data_accessor.o data_accessor.cc -std=c++11 
+user.o: user.cc headers/user.h
+	g++ -c -o user.o user.cc -std=c++11
+sqlite3.o: sqlite3.c headers/sqlite3.h
+	gcc -c -o sqlite3.o sqlite3.c 
 clean: 
 	rm server $(objects) 
 

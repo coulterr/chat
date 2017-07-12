@@ -1,4 +1,5 @@
 #include "headers/user.h"
+
 User::User(int id, std::string name, std::string password)
 :id(id), name(name), password(password)
 {	
@@ -9,6 +10,18 @@ bool User::validate_password(std::string attempt)
 	if(password.compare(attempt) == 0) return true; 
 	return false; 
 }
+
+
+
+int User::get_id()
+{
+	return id; 
+}
+std::string User::get_name()
+{
+	return name;
+}
+
 
 void User::print()
 {

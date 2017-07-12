@@ -1,7 +1,7 @@
 #include "headers/server_thread.h"
 
-Server_thread::Server_thread(int portnum, Threadpool &threadpool, Client_directory &directory) 
-: portnum(portnum), threadpool(threadpool), directory(directory) 
+Server_thread::Server_thread(int portnum, Threadpool &threadpool, Client_directory &directory, Data_accessor &accessor) 
+: portnum(portnum), threadpool(threadpool), directory(directory), accessor(accessor) 
 {
 }
 
@@ -13,7 +13,7 @@ void Server_thread::start()
 
 void Server_thread::spawn_connection(int socketfd)
 {
-	Connection *connection = new Connection(socketfd, directory); 
+	Connection *connection = new Connection(socketfd, directory, accessor); 
 	threadpool.add_connection(connection); 
 }
 		

@@ -17,7 +17,7 @@ class Client_directory
 	public:
 		Client_directory(); 
 		bool contains_client(std::string name); 
-		bool add_client(Client &client); 
+		bool add_client(std::string name, Client &client); 
 		bool dispatch_message(std::string name, std::string message); 
 		void remove_client(std::string name); 
 		void list_clients(); 

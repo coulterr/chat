@@ -8,7 +8,7 @@ Connection::Connection(int socketfd, Client_directory &directory, Data_accessor 
 bool Connection::process_login()
 {
 	std::string name = client.recv_message(); 
-	client.set_name(name); 
+	user = accessor.get_user_by_name(name); 
 	return true; 
 }
 
@@ -19,7 +19,7 @@ void Connection::listen_for_messages()
 		std::string message = client.recv_message();
 		if (message.compare("TIMEOUT") == 0)
 		{
-			if (!directory.dispatch_message(client.get_name(), "KEEPALIVE"))
+			if (!directory.dispatch_message((*user).get_name(), "KEEPALIVE"))
 			{
 				//std::cout << "DIRTY SHUTDOWN" << std::endl;
 				break;  
@@ -38,7 +38,7 @@ void Connection::listen_for_messages()
 		else {
 			std::string recipient = message.substr(0, message.find_first_of(" ", 0));
 			message = message.substr(message.find_first_of(" ", 0), message.length());  
-			message = client.get_name() + ": " + message;
+			message = (*user).get_name() + ": " + message;
 			directory.dispatch_message(recipient, message); 
 		}
 	}
@@ -56,9 +56,9 @@ void Connection::start()
 	
 		if (process_login()) 
 		{
-			directory.add_client(client); 
+			directory.add_client((*user).get_name(), client); 
 			listen_for_messages(); 
-			directory.remove_client(client.get_name()); 
+			directory.remove_client((*user).get_name()); 
 		}
 	}
 }

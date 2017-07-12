@@ -47,7 +47,6 @@ User *Data_accessor::get_user_by_name(std::string name)
 
 	User *user = new User(id, name, password); 
 	return user; 
-	
 }
 
 Data_accessor::~Data_accessor()
