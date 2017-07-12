@@ -13,7 +13,7 @@
 #include "headers/data_accessor.h"
 int main()
 {
-	const int PORT = 4447;
+	const int PORT = 4449;
 	const int THREADCOUNT = 100; 
 	
 	Data_accessor *accessor = new Data_accessor(std::string("database.db")); 

@@ -40,7 +40,12 @@ void Connection::listen_for_messages()
 			int recipient_id = std::stoi(recipient_str, NULL, 0); 
 			message = message.substr(message.find_first_of(" ", 0), message.length());  
 			message = std::to_string((*user).get_id()) + ": " + message;
-			directory.dispatch_message(recipient_id, message); 
+			bool success = directory.dispatch_message(recipient_id, message); 
+			if(!success)
+			{
+				std::string err_msg = recipient_str + std::string(": Failure to send message");  
+				directory.dispatch_message((*user).get_id(), err_msg); 
+			}
 		}
 	}
 }
