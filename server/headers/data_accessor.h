@@ -9,6 +9,8 @@
 #include <semaphore.h>
 
 #include "user.h"
+#include "friend_request.h"
+#include "friend_entry.h"
 
 class Data_accessor
 {
