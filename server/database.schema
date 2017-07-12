@@ -12,6 +12,14 @@ CREATE TABLE friend_entry (
 	FOREIGN KEY (friend_b) REFERENCES user(id) 
 ); 
 
+CREATE TABLE friend_request (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+	sender INTEGER NOT NULL, 
+	recipient INTEGER NOT NULL, 
+	FOREIGN KEY (sender) REFERENCES user(id), 
+	FOREIGN KEY (recipient) REFERENCES user(id)
+); 
+
 INSERT INTO user (name, password) 
 VALUES ('Riley', 'xxx');
  
