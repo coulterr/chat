@@ -2,7 +2,7 @@
 #include "headers/sqlite3.h"
 
 const std::string Data_accessor::GET_USER_STMT = std::string("SELECT id, password FROM user WHERE name=?;"); 
-
+const std::string Data_accessor::ADD_USER_STMT = std::string("INSERT INTO user (name, password) VALUES (?, ?);");
 Data_accessor::Data_accessor(std::string path)
 {		
 	sqlite3_open(path.c_str(), &database); 
@@ -31,6 +31,16 @@ void Data_accessor::get_user_by_id(int id)
 	std::cout << name << ": " << password << std::endl; 
 }
 
+bool Data_accessor::add_user(std::string name, std::string password) 
+{
+	sqlite3_stmt *statement; 
+	sqlite3_prepare_v2(database, (const char *) ADD_USER_STMT.c_str(), -1, &statement, NULL); 
+	sqlite3_bind_text(statement, 1, (const char *) name.c_str(), -1, 0); 		
+	sqlite3_bind_text(statement, 2, (const char *) password.c_str(), -1, 0); 
+	int status = sqlite3_step(statement); 
+	if(status == SQLITE_DONE) return true; 
+	return false; 			
+}
 User *Data_accessor::get_user_by_name(std::string name)
 {
 	sqlite3_stmt *statement; 

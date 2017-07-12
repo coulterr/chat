@@ -1,4 +1,5 @@
 *.o
 server/server
+server/dbtest
 client/client
 *.db

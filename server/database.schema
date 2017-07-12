@@ -6,11 +6,12 @@ CREATE TABLE user (
 
 CREATE TABLE friend_entry (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
-	owner_id INTEGER NOT NULL,
-	friend_id INTEGER NOT NULL,
-	FOREIGN KEY (owner_id) REFERENCES user(id), 
-	FOREIGN KEY (friend_id) REFERENCES user(id) 
+	friend_a INTEGER NOT NULL,
+	friend_b INTEGER NOT NULL,
+	FOREIGN KEY (friend_a) REFERENCES user(id), 
+	FOREIGN KEY (friend_b) REFERENCES user(id) 
 ); 
 
 INSERT INTO user (name, password) 
-VALUES ('Riley', 'xxx'); 
+VALUES ('Riley', 'xxx');
+ 
