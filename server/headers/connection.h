@@ -22,8 +22,19 @@ class Connection
 		Client_directory &directory; 
 		Data_accessor &accessor; 
 		User *user; 
+		static const int IN_MESSAGE; 
+		static const int IN_FRIEND_REQUEST; 
+		static const int IN_FRIEND_REQUEST_RESPONSE; 
+		static const int OUT_MESSAGE; 
+		static const int OUT_FRIEND_REQUEST; 
+		static const int OUT_FRIEND_INFO; 
+		static const int OUT_FRIEND_UPDATE; 
 	public:
 		Connection(int socketfd, Client_directory &directory, Data_accessor &accessor); 
+		bool process_friend_request_response(std::string message); 
+		bool process_friend_request(std::string message); 
+		bool process_normal_message(std::string message); 
+		bool process_message(std::string message); 
 		bool process_login();
 		void listen_for_messages();
 		void start();

@@ -28,3 +28,17 @@ If scaled...
   functions. Otherwise, it would be forwarded to a foreign application server. 
 - Events like login, logout, add friend, register... data would be send to remote master
   database, then propagate down, rather than be sent directly to local database. 
+
+
+Types of messages received by server: 
+	
+	0 : RECIPIENT_ID : MSG_TXT   //ordinary message
+	1 : RECIPIENT_NAME          //friend request 
+	2 : BOOL : REQUEST_ID       //friend request response 
+
+Types of messages sent by server: 
+
+	3 : SENDER_ID : MSG_TXT      		//ordinary message 
+	4 : RECIPIENT_NAME : REQUEST_ID	//friend request
+	5 : FRIEND_ID : FRIEND_NAME : STATUS	//friend info
+	6 : FRIEND_ID : STATUS 		//friend status update

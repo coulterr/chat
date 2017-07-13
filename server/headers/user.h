@@ -17,6 +17,7 @@ class User
 		int get_id(); 
 		std::string get_name(); 
 		bool validate_password(std::string attempt); 
+		bool has_friend(int id); 
 		void print(); 
 		~User(); 
 };

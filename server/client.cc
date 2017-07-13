@@ -16,6 +16,15 @@ std::string Client::recv_message()
 	return comm.recv_message(); 
 }
 
+void Client::set_user(User *user)
+{
+	this -> user = user; 	
+}
+
+User &Client::get_user()
+{
+	return *user; 
+}
 
 Client::~Client()
 {

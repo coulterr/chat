@@ -17,11 +17,16 @@ int User::get_id()
 {
 	return id; 
 }
+
 std::string User::get_name()
 {
 	return name;
 }
 
+bool User::has_friend(int id) 
+{
+	return true; 
+}
 
 void User::print()
 {
