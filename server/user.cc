@@ -3,6 +3,7 @@
 User::User(int id, std::string name, std::string password)
 :id(id), name(name), password(password)
 {	
+	sem_init(&lock, 0, 1); 
 }
 
 bool User::validate_password(std::string attempt)
@@ -25,7 +26,15 @@ std::string User::get_name()
 
 bool User::has_friend(int id) 
 {
-	return true; 
+	sem_wait(&lock); 
+		return true; 
+	sem_post(&lock); 
+}
+
+void User::add_friend(int id, std::string name)
+{
+	sem_wait(&lock); 
+	sem_post(&lock); 
 }
 
 void User::print()
